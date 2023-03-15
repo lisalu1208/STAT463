@@ -1,0 +1,166 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Assignment 2 STAT 315-463: Multivariable Statistical Methods and Applications},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{bm}
+\usepackage{amsmath}
+
+\title{Assignment 2 STAT 315-463: Multivariable Statistical Methods and
+Applications}
+\author{}
+\date{\vspace{-2.5em}}
+
+\begin{document}
+\maketitle
+
+\vspace{-8 mm}
+
+\textbf{Due date: Friday 24 March 2023}\\
+\vspace{-7 mm}
+
+\begin{itemize}
+\tightlist
+\item
+  Your assignment needs to show the R code you used, and your well
+  discussed answers to the questions.
+\item
+  Submit your assignments on Learn. \vspace{- 2 mm}
+\end{itemize}
+
+\hypertarget{background}{%
+\subsection{Background}\label{background}}
+
+In the dataset, \texttt{USJudgeRatings.csv}, you are presented with
+ratings of State Judges on the Superior Court on 12 variables provided
+by 43 Lawyers in 1977.\vspace{-5 mm}
+
+\begin{center}
+\begin{tabular}{l|l||l|l||l|l} \hline
+CONT &  Number of contacts of lawyer with judge &
+INTG &  Judicial integrity &
+DMNR &  Demeanour \\
+DILG &  Diligence &
+CFMG &  Case flow managing &
+DECI &  Prompt decisions \\
+PREP &  Preparation for trial &
+FAMI &  Familiarity with law &
+ORAL &  Sound oral rulings \\
+WRIT &  Sound written rulings &
+PHYS &  Physical ability &
+RTEN &  Worthy of retention \\ \hline
+\end{tabular}\end{center}
+
+\hypertarget{principal-component-analysis-of-the-rating-data.}{%
+\subsection{Principal Component Analysis of the Rating
+Data.}\label{principal-component-analysis-of-the-rating-data.}}
+
+Perform a PCA on the standardised ratings. Note, you will need to
+standardise the ratings yourself. Then answer the following questions.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  How many principal components do you believe should be retained.
+  Justify your answer by looking at the variation in the data explained
+  by each component.
+\item
+  In your own words, describe what you believe the first principal
+  component is measuring.
+\item
+  What do you think the second principal component represents?
+\item
+  You are told \emph{Judicial Integrity} and \emph{Demeanour} are
+  particularly important traits, and should be given 5 times the weight
+  of the other variables. Re-run the Principal Component Analysis such
+  that Integrity and Demeanour is given 5 times the weight of all other
+  variables. What impact does this have?
+\end{enumerate}
+
+\hypertarget{factor-analysis-for-the-rating-data}{%
+\subsection{Factor Analysis for the Rating
+Data}\label{factor-analysis-for-the-rating-data}}
+
+Perform Factor Analysis on the standardised Ratings Data.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  What happens when you try to fit a 3 and a 4 factor solution with no
+  rotation. Hint: For the three factor solution, you may need to add
+  \texttt{control=list(nstart=100)} as an additional argument in the
+  \texttt{factanal} function.
+\item
+  Which variables are grouped by the first two factors? (e.g.~threshold
+  \(|\text{loading}| \geq 0.25\))
+\item
+  Compare the factor loadings for the first two factors to the first two
+  principal components of the standardised data found in the previous
+  section. Comment on any similarities and/or differences.
+\item
+  Comment on the observed variable specific variances (the
+  uniquenesses). Do you believe all observed variables are explained by
+  the factors discovered.
+\item
+  Re-fit the 3 factor solution with a varimax rotation. How does this
+  change the interpretation of the factors? In this case, do you find
+  the rotated or non-rotated solution easier to interpret. Explain why
+  or why not?
+\end{enumerate}
+
+\end{document}
