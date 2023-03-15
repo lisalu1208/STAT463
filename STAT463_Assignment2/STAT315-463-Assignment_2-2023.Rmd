@@ -1,0 +1,67 @@
+---
+title: 'Assignment 2 STAT 315-463:  Multivariable Statistical Methods and Applications'
+header-includes:
+   - \usepackage{bm}
+   - \usepackage{amsmath}
+output: 
+  pdf_document:
+    number_sections: no
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+\vspace{-8 mm}
+**Due date: Friday 24 March 2023**  
+\vspace{-7 mm}
+
+- Your assignment needs to show the R code you used, and your well discussed answers to  the questions. 
+- Submit your assignments on Learn.
+\vspace{- 2 mm}
+
+## Background
+
+In the dataset, \texttt{USJudgeRatings.csv}, you are presented with ratings of State Judges on the Superior Court on 12 variables provided by 43 Lawyers in 1977.\vspace{-5 mm}
+
+\begin{center}
+\begin{tabular}{l|l||l|l||l|l} \hline
+CONT &	Number of contacts of lawyer with judge &
+INTG &	Judicial integrity &
+DMNR &	Demeanour \\
+DILG &	Diligence &
+CFMG &	Case flow managing &
+DECI &	Prompt decisions \\
+PREP &	Preparation for trial &
+FAMI &	Familiarity with law &
+ORAL &	Sound oral rulings \\
+WRIT &	Sound written rulings &
+PHYS &	Physical ability &
+RTEN &	Worthy of retention \\ \hline
+\end{tabular}\end{center}
+
+## Principal Component Analysis of the Rating Data.
+
+Perform a PCA on the standardised ratings. Note, you will need to standardise the ratings yourself. Then answer the following questions.
+
+1. How many principal components do you believe should be retained. Justify your answer by looking at the variation in the data explained by each component.
+
+2. In your own words, describe what you believe the first principal component is measuring.
+
+3. What do you think the second principal component represents?
+
+4. You are told *Judicial Integrity* and *Demeanour* are particularly important traits, and should be given 5 times the weight of the other variables. Re-run the Principal Component Analysis such that Integrity and Demeanour is given 5 times the weight of all other variables. What impact does this have?
+
+
+## Factor Analysis for the Rating Data
+ 
+Perform Factor Analysis on the standardised Ratings Data. 
+ 
+1. What happens when you try to fit a 3 and a 4 factor solution with no rotation. Hint: For the three factor solution, you may need to add \texttt{control=list(nstart=100)} as an additional argument in the \texttt{factanal} function.
+
+2. Which variables are grouped by the first two factors? (e.g. threshold $|\text{loading}| \geq 0.25$)
+
+3. Compare the factor loadings for the first two factors to the first two principal components of the standardised data found in the previous section. Comment on any similarities and/or differences.
+
+4. Comment on the observed variable specific variances (the uniquenesses). Do you believe all observed variables are explained by the factors discovered.  
+
+5. Re-fit the 3 factor solution with a varimax rotation. How does this change the interpretation of the factors? In this case, do you find the rotated or non-rotated solution easier to interpret. Explain why or why not?
