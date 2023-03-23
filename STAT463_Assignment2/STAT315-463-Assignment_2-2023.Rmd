@@ -77,7 +77,15 @@ Perform Factor Analysis on the standardised Ratings Data.
  
 1. What happens when you try to fit a 3 and a 4 factor solution with no rotation. Hint: For the three factor solution, you may need to add \texttt{control=list(nstart=100)} as an additional argument in the \texttt{factanal} function.
 
+```{r}
+factor3 <- factanal(dataset_std[,-1], factors = 3, rotation = "none", control=list(nstart=100));factor3
+
+factor4 <- factanal(dataset_std[,-1], factors = 4, rotation = "none");factor4
+```
+
+
 2. Which variables are grouped by the first two factors? (e.g. threshold $|\text{loading}| \geq 0.25$)
+
 
 3. Compare the factor loadings for the first two factors to the first two principal components of the standardised data found in the previous section. Comment on any similarities and/or differences.
 
