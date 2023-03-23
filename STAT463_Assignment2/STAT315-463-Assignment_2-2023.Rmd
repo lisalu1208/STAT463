@@ -58,12 +58,21 @@ summary(dataset_std)
 
 
 1. How many principal components do you believe should be retained. Justify your answer by looking at the variation in the data explained by each component.
+
+
 ```{r}
 sapply(dataset[,-1], var)
+```
+```{r}
+pca <- prcomp(dataset_std[,-1])
+screeplot(pca)
+biplot(pca)
+summary(pca)
 ```
 
 
 2. In your own words, describe what you believe the first principal component is measuring.
+
 
 
 3. What do you think the second principal component represents?
