@@ -92,3 +92,7 @@ factor4 <- factanal(dataset_std[,-1], factors = 4, rotation = "none");factor4
 4. Comment on the observed variable specific variances (the uniquenesses). Do you believe all observed variables are explained by the factors discovered.  
 
 5. Re-fit the 3 factor solution with a varimax rotation. How does this change the interpretation of the factors? In this case, do you find the rotated or non-rotated solution easier to interpret. Explain why or why not?
+```{r}
+factanal(dataset_std[,-1], factors = 3, rotation = "varimax", control=list(nstart=100))
+```
+
