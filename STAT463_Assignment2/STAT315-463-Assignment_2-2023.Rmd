@@ -51,7 +51,7 @@ Perform a PCA on the standardised ratings. Note, you will need to standardise th
 
 ```{r}
 # Standardise the ratings
-library(dplyr)
+library(dplyr , quietly = T)
 dataset_std <- dataset %>% mutate(across(where(is.numeric),scale))
 summary(dataset_std)
 ```
@@ -59,17 +59,20 @@ summary(dataset_std)
 
 1. How many principal components do you believe should be retained. Justify your answer by looking at the variation in the data explained by each component.
 
-
 ```{r}
-sapply(dataset[,-1], var)
-```
-```{r}
+# Perform Pricipal Component Analysis on the standardised dataset
 pca <- prcomp(dataset_std[,-1])
+# Use the scree plot
 screeplot(pca)
-biplot(pca)
-summary(pca)
+```
+From the scree plot, we can clearly see that the first two principal components can capture most of the variation from the data. Third and fourth components still capture a few variation but not as much. From the fifth onward, the values are very close to 0. Therefore, I think no more than the first four principal components should be retained.  
+
+```{r}
+# Get the percentage of variance explained by each component
+variance_explained <- pca$sdev^2 / sum(pca$sdev^2) * 100
 ```
 
+It is shown that the first principal component (PC1) explains 84.4% of variation, with PC2 accounts for 9.2%, PC3 for 2.8%, and PC4 for 2.1%. The first 3 PCs explain 96.4% of the variation and the first 4 PCs explain 98.5% of the variation. So from this result, I think even just take the first 3 PCs should be enough to cover a good percentage of variation.     
 
 2. In your own words, describe what you believe the first principal component is measuring.
 
