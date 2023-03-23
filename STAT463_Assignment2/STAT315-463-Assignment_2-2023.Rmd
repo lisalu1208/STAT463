@@ -69,13 +69,16 @@ From the scree plot, we can clearly see that the first two principal components 
 
 ```{r}
 # Get the percentage of variance explained by each component
-variance_explained <- pca$sdev^2 / sum(pca$sdev^2) * 100
+summary(pca)
 ```
 
 It is shown that the first principal component (PC1) explains 84.4% of variation, with PC2 accounts for 9.2%, PC3 for 2.8%, and PC4 for 2.1%. The first 3 PCs explain 96.4% of the variation and the first 4 PCs explain 98.5% of the variation. So from this result, I think even just take the first 3 PCs should be enough to cover a good percentage of variation.     
 
 2. In your own words, describe what you believe the first principal component is measuring.
 
+```{r}
+summary(pca)
+```
 
 
 3. What do you think the second principal component represents?
