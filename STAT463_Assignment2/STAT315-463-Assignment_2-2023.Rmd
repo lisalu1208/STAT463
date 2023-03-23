@@ -77,11 +77,13 @@ It is shown that the first principal component (PC1) explains 84.4% of variation
 2. In your own words, describe what you believe the first principal component is measuring.
 
 ```{r}
-pca$rotation[,1]
+pca$rotation[, 1:2]
 ```
-
+Rotations, or loadings, specify the weight that each variable contribute to the component. In the result above, we can see that all the variables, except CONT, have negative values. Among those, the component has large negative associations with ORAL, WRIT
 
 3. What do you think the second principal component represents?
+
+
 
 4. You are told *Judicial Integrity* and *Demeanour* are particularly important traits, and should be given 5 times the weight of the other variables. Re-run the Principal Component Analysis such that Integrity and Demeanour is given 5 times the weight of all other variables. What impact does this have?
 
