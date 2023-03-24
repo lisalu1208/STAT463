@@ -104,16 +104,23 @@ Perform Factor Analysis on the standardised Ratings Data.
 1. What happens when you try to fit a 3 and a 4 factor solution with no rotation. Hint: For the three factor solution, you may need to add \texttt{control=list(nstart=100)} as an additional argument in the \texttt{factanal} function.
 
 ```{r}
-factor3 <- factanal(dataset_std, factors = 3, rotation = "none", control=list(nstart=100));factor3
-
-factor4 <- factanal(dataset_std, factors = 4, rotation = "none");factor4
+factor3 <- factanal(dataset_std, factors = 3, scores= "regression", 
+                    rotation = "none", control=list(nstart=100));factor3
+factor4 <- factanal(dataset_std, factors = 4, scores = "regression", rotation = "none");factor4
 ```
 
 
 2. Which variables are grouped by the first two factors? (e.g. threshold $|\text{loading}| \geq 0.25$)
-
+```{r}
+biplot(factor3$scores, factor3$loadings)
+```
+From the plot, we can see that INTG and DMNR are grouped together, 
 
 3. Compare the factor loadings for the first two factors to the first two principal components of the standardised data found in the previous section. Comment on any similarities and/or differences.
+```{r}
+# Comparison of factor loadings from FA and PCA
+cor(factor3$loadings[, 1:2], pca$rotation[, 1:2])
+```
 
 
 
@@ -121,6 +128,8 @@ factor4 <- factanal(dataset_std, factors = 4, rotation = "none");factor4
 
 5. Re-fit the 3 factor solution with a varimax rotation. How does this change the interpretation of the factors? In this case, do you find the rotated or non-rotated solution easier to interpret. Explain why or why not?
 ```{r}
-factanal(dataset_std, factors = 3, rotation = "varimax", control=list(nstart=100))
+factor3_rotate <- factanal(dataset_std, factors = 3, rotation = "varimax", scores = "regression", control=list(nstart=100)); factor3_rotate
+
+biplot(factor3_rotate$scores, factor3_rotate$loadings)
 ```
 
