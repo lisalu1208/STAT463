@@ -51,9 +51,7 @@ Perform a PCA on the standardised ratings. Note, you will need to standardise th
 
 ```{r}
 # Standardise the ratings
-library(dplyr , quietly = T)
-dataset_std <- dataset %>% mutate(across(where(is.numeric),scale))
-summary(dataset_std)
+dataset_std <- data.frame(scale(dataset[,-1]))
 ```
 
 
@@ -108,7 +106,7 @@ Perform Factor Analysis on the standardised Ratings Data.
 ```{r}
 factor3 <- factanal(dataset_std[,-1], factors = 3, rotation = "none", control=list(nstart=100));factor3
 
-factor4 <- factanal(dataset_std[,-1], factors = 4, rotation = "none");factor4
+factor4 <- factanal(dataset_std[-1], factors = 4, rotation = "none");factor4
 ```
 
 
@@ -116,6 +114,8 @@ factor4 <- factanal(dataset_std[,-1], factors = 4, rotation = "none");factor4
 
 
 3. Compare the factor loadings for the first two factors to the first two principal components of the standardised data found in the previous section. Comment on any similarities and/or differences.
+
+
 
 4. Comment on the observed variable specific variances (the uniquenesses). Do you believe all observed variables are explained by the factors discovered.  
 
