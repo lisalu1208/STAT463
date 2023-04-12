@@ -44,6 +44,10 @@ poisson_model <- glm(formula = livch ~ district + use + urban, data = dataset, f
 Poisson regression is used to predict a dependent variable that consists of "count data" independent variables. Therefore, in this case, all the variables were used, with the exception of age as it was not a "count data" type of data.   
 
 2. Apply either forward or backward selection to determine the most appropriate model for this data. For the chosen model, write down the model equation. (2 marks)
+```{r}
+
+```
+
 
 3. For the model chosen in 2, provide an interpretation of the regression coefficients, on both the link scale and the response scale. Include 95 \% confidence intervals (4 marks)
 
