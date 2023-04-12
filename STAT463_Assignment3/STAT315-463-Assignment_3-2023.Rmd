@@ -35,6 +35,13 @@ The response variable is the number of living children *livch* (0, 1, 2, 3, 4, 5
 ## Questions
 
 1. Fit a Poisson Regression including all possible predictor variables. (1 mark)
+```{r}
+# Read in data
+dataset <- read.csv("Contraception315.csv")
+# Fit a Poisson Regression
+poisson_model <- glm(formula = livch ~ district + use + urban, data = dataset, family = poisson)
+```
+Poisson regression is used to predict a dependent variable that consists of "count data" independent variables. Therefore, in this case, all the variables were used, with the exception of age as it was not a "count data" type of data.   
 
 2. Apply either forward or backward selection to determine the most appropriate model for this data. For the chosen model, write down the model equation. (2 marks)
 
