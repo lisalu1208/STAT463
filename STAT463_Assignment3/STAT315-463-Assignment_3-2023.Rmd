@@ -61,8 +61,8 @@ $$
 
 3. For the model chosen in 2, provide an interpretation of the regression coefficients, on both the link scale and the response scale. Include 95 \% confidence intervals (4 marks)
 
-The coefficient of variable **Use** is 0.28, with the standard deviation of 0.06350. 
-Use: $e^{0.28} = 1.323$
+The coefficient of variable **Use** is 0.28, with the standard deviation of 0.06350. \\
+Use: $e^{0.28} = 1.323$ \\
 Urban: $e^{-0.32} = 0.726$
 
 4. Describe what the implication of unaccounted overdispersion would be for any inference made. Comment on whether you believe overdispersion is present in this dataset. Describe how you would change your analysis to deal with overdispersion.  (4 marks)
@@ -71,11 +71,24 @@ model <- stepAIC(poisson_model, direction = 'backward',
               scope = list(upper = poisson_model,lower = poisson_model1))
 summary(model)
 ```
-
+Overdispersion can be detected by dividing the residual deviance by the degrees of freedoms. 
 
 5. You are later told that the researchers in comparisons between women without children and women with children. Create a new variable \texttt{child} such that a \texttt{0} indicates a women with no living children, and \texttt{1} indicates a women with at least one living child. (1 mark)
+```{r,warning=FALSE, message=FALSE}
+library(dplyr)
+dataset1 <- dataset %>%
+  mutate(child = case_when(livch == 0 ~ 0,
+                           livch > 0 ~ 1))
+head(dataset1)
+```
+
 
 6. Fit a Logistic Regression including all possible predictor variables and \texttt{child} as the response. (1 mark)
+```{r}
+model_lr <- glm(child ~ district + use + age + urban, data = dataset1, family = binomial())
+summary(model_lr)
+```
+
 
 7. Apply either forward or backward selection to determine the most appropriate model for this data. For the chosen model, write down the model equation. Were the same predictor variables chosen as the Poisson regression (3 marks)
 
