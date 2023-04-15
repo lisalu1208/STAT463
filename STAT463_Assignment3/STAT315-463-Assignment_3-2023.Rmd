@@ -39,7 +39,8 @@ The response variable is the number of living children *livch* (0, 1, 2, 3, 4, 5
 # Read in data
 dataset <- read.csv("Contraception315.csv")
 # Fit a Poisson Regression
-poisson_model <- glm(formula = livch ~ district + use + urban, data = dataset, family = poisson)
+poisson_model <- glm(formula = livch ~ district + use + urban + age, data = dataset, family = poisson)
+summary(poisson_model)
 ```
 Poisson regression is used to predict a dependent variable that consists of "count data" independent variables. Therefore, in this case, all the variables were used, with the exception of age as it was not a "count data" type of data.   
 
