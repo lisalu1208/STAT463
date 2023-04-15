@@ -39,7 +39,8 @@ The response variable is the number of living children *livch* (0, 1, 2, 3, 4, 5
 # Read in data
 dataset <- read.csv("Contraception315.csv")
 # Fit a Poisson Regression
-poisson_model <- glm(formula = livch ~ district + use + urban + age, data = dataset, family = poisson)
+poisson_model <- glm(formula = livch ~ district + use + urban + age, 
+                     data = dataset, family = poisson)
 summary(poisson_model)
 ```
 Poisson regression is used to predict a dependent variable that consists of "count data" independent variables. Therefore, in this case, all the variables were used, with the exception of age as it was not a "count data" type of data.   
@@ -49,28 +50,26 @@ Poisson regression is used to predict a dependent variable that consists of "cou
 library(MASS)
 # The minimum model
 poisson_model1 <- glm(formula = livch ~ 1, family = poisson, data = dataset)
-# Apply the forward selection
-summary(stepAIC(poisson_model1, direction = 'forward', 
-                scope = list(upper = poisson_model,lower = poisson_model1)))
-summary(stepAIC(poisson_model, direction = 'backward', 
-                scope = list(upper = poisson_model,lower = poisson_model1)))
+# Apply the backward selection
+poisson_back <- stepAIC(poisson_model, direction = 'backward', 
+                scope = list(upper = poisson_model,lower = poisson_model1))
+summary(poisson_back)
 ```
 Both the forward and backward selection selected the same variables. The equation is shown as below:
 $$
-Livch = 0.84 + 0.28*use - 0.32*urban
+Livch = 0.65 + 0.31*use - 0.24*urban + 0.06*age
 $$
 
 3. For the model chosen in 2, provide an interpretation of the regression coefficients, on both the link scale and the response scale. Include 95 \% confidence intervals (4 marks)
 
 The coefficient of variable **Use** is 0.28, with the standard deviation of 0.06350. \\
-Use: $e^{0.28} = 1.323$ \\
-Urban: $e^{-0.32} = 0.726$
+Use: $e^{0.31} = 1.36$ \\
+Urban: $e^{-0.24} = 0.79$ \\
+Age: $e^{0.06} = 1.06$
 
 4. Describe what the implication of unaccounted overdispersion would be for any inference made. Comment on whether you believe overdispersion is present in this dataset. Describe how you would change your analysis to deal with overdispersion.  (4 marks)
 ```{r}
-model <- stepAIC(poisson_model, direction = 'backward', 
-              scope = list(upper = poisson_model,lower = poisson_model1))
-summary(model)
+summary(poisson_back)
 ```
 Overdispersion can be detected by dividing the residual deviance by the degrees of freedoms. 
 
@@ -93,11 +92,10 @@ summary(model_lr)
 7. Apply either forward or backward selection to determine the most appropriate model for this data. For the chosen model, write down the model equation. Were the same predictor variables chosen as the Poisson regression (3 marks)
 ```{r}
 model_lr1 <- glm(child ~ 1, family = binomial(), data = dataset1)
-# Apply the forward selection
-summary(stepAIC(model_lr, direction = 'backward', 
-                scope = list(upper = model_lr,lower = model_lr1)))
-summary(stepAIC(model_lr1, direction = 'forward', 
-                scope = list(upper = model_lr,lower = model_lr1)))
+# Apply the backward selection
+model_lr_back <- stepAIC(model_lr, direction = 'backward', 
+                scope = list(upper = model_lr,lower = model_lr1))
+summary(model_lr_back)
 ```
 
 
