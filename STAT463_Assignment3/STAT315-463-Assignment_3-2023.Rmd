@@ -89,8 +89,16 @@ model_lr <- glm(child ~ district + use + age + urban, data = dataset1, family = 
 summary(model_lr)
 ```
 
-
 7. Apply either forward or backward selection to determine the most appropriate model for this data. For the chosen model, write down the model equation. Were the same predictor variables chosen as the Poisson regression (3 marks)
+```{r}
+model_lr1 <- glm(child ~ 1, family = binomial(), data = dataset1)
+# Apply the forward selection
+summary(stepAIC(model_lr, direction = 'backward', 
+                scope = list(upper = model_lr,lower = model_lr1)))
+summary(stepAIC(model_lr1, direction = 'forward', 
+                scope = list(upper = model_lr,lower = model_lr1)))
+```
+
 
 8. If $Y$ is Poisson distributed with parameter $\lambda$, then $\Pr(Y > 0) = 1 -e^{-\lambda}$. Use this to construct estimates of the probability of having at least one living child for each women in the study from the Poisson regression model chosen in part 2. Compare this to the estimate of the  probability of having at least one living child for each women in the study using the Logistic regression model chosen in part 7. (Note: Due to the number of women in the study, do not provide a table of all the estimated probabilities. Instead focus on graphical visualizations to determine any similarities and differences.) (4 marks)
 
