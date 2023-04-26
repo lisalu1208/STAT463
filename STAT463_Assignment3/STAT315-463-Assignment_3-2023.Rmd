@@ -38,12 +38,15 @@ The response variable is the number of living children *livch* (0, 1, 2, 3, 4, 5
 ```{r}
 # Read in data
 dataset <- read.csv("Contraception315.csv")
+# Convert District variable into factor
+dataset$district <- as.factor(dataset$district)
+dataset$urban <- as.factor(dataset$urban)
 # Fit a Poisson Regression
 poisson_model <- glm(formula = livch ~ district + use + urban + age, 
                      data = dataset, family = poisson)
 summary(poisson_model)
 ```
-Poisson regression is used to predict a dependent variable that consists of "count data" independent variables. Therefore, in this case, all the variables were used, with the exception of age as it was not a "count data" type of data.   
+   
 
 2. Apply either forward or backward selection to determine the most appropriate model for this data. For the chosen model, write down the model equation. (2 marks)
 ```{r}
@@ -55,7 +58,7 @@ poisson_back <- stepAIC(poisson_model, direction = 'backward',
                 scope = list(upper = poisson_model,lower = poisson_model1))
 summary(poisson_back)
 ```
-Both the forward and backward selection selected the same variables. The equation is shown as below:
+The backward selection suggested three variables: *use*, *urban*, and *age*. The equation is shown as below:
 $$
 Livch = 0.65 + 0.31*use - 0.24*urban + 0.06*age
 $$
