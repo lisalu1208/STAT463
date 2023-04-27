@@ -42,9 +42,9 @@ dataset <- read.csv("Contraception315.csv")
 dataset$district <- as.factor(dataset$district)
 str(dataset)
 # Fit a Poisson Regression
-poisson_model <- glm(formula = livch ~ district + use + urban + age, 
+poisson_full <- glm(formula = livch ~ district + use + urban + age, 
                      data = dataset, family = poisson())
-summary(poisson_model)
+summary(poisson_full)
 ```
    
 
@@ -52,9 +52,9 @@ summary(poisson_model)
 ```{r}
 library(MASS)
 # Apply the forward selection
-
-poisson_model1 <- step(glm(livch ~ 1, data = dataset, family = poisson()), direction = "forward", 
-                      scope = list(lower = poisson2, upper = poisson_model))
+poisson_null <- glm(livch ~ 1, data = dataset, family = poisson())
+poisson_model1 <- step(poisson_null, direction = "forward", 
+                      scope = list(lower = poisson_null, upper = poisson_full))
 summary(poisson_model1)
 ```
 Here the forward model selection was used. The most significant variable here is the age of the women, followed by the contraceptive use. The other two less significant variables are living in district 14 and living in the urban. 
@@ -80,7 +80,7 @@ Age: $e^{0.06} = 1.06$
 ```{r}
 summary(poisson_back)
 ```
-Overdispersion can be detected by dividing the residual deviance by the degrees of freedoms. 
+Overdispersion can be detected by dividing the residual deviance by the degrees of freedoms. Here we can see that there is overdispersion present in this dataset. One potential approach to deal with overdispersion is to use negative binomial model, which explicitly models the overdispersion that happens in the dataset. 
 
 5. You are later told that the researchers in comparisons between women without children and women with children. Create a new variable \texttt{child} such that a \texttt{0} indicates a women with no living children, and \texttt{1} indicates a women with at least one living child. (1 mark)
 ```{r,warning=FALSE, message=FALSE}
@@ -94,21 +94,27 @@ head(dataset1)
 
 6. Fit a Logistic Regression including all possible predictor variables and \texttt{child} as the response. (1 mark)
 ```{r}
-model_lr <- glm(child ~ district + use + age + urban, data = dataset1, family = binomial())
-summary(model_lr)
+lr_full <- glm(child ~ district + use + age + urban, data = dataset1, family = binomial())
+summary(lr_full)
 ```
 
 7. Apply either forward or backward selection to determine the most appropriate model for this data. For the chosen model, write down the model equation. Were the same predictor variables chosen as the Poisson regression (3 marks)
 ```{r}
-model_lr1 <- glm(child ~ 1, family = binomial(), data = dataset1)
+lr_null<- glm(child ~ 1, family = binomial(), data = dataset1)
 # Apply the backward selection
-model_lr_back <- stepAIC(model_lr, direction = 'backward', 
-                scope = list(upper = model_lr,lower = model_lr1))
-summary(model_lr_back)
+lr1 <- stepAIC(lr_full, direction = 'backward', 
+                scope = list(upper = lr_full,lower = lr_null))
+summary(lr1)
 ```
+Here the backward selection was used. The chosen variables were quite similar to the previous model. The equation in this case is shown below:
+$$
+Logit[child] = 1.978 + 0.262*age + 1.024*useY-0.691*urbanY
+$$
 
+8. If $Y$ is Poisson distributed with parameter $\lambda$, then $\Pr(Y > 0) = 1 -e^{-\lambda}$. Use this to construct estimates of the probability of having at least one living child for each women in the study from the Poisson regression model chosen in part 2. Compare this to the estimate of the probability of having at least one living child for each women in the study using the Logistic regression model chosen in part 7. (Note: Due to the number of women in the study, do not provide a table of all the estimated probabilities. Instead focus on graphical visualizations to determine any similarities and differences.) (4 marks)
+```{r}
 
-8. If $Y$ is Poisson distributed with parameter $\lambda$, then $\Pr(Y > 0) = 1 -e^{-\lambda}$. Use this to construct estimates of the probability of having at least one living child for each women in the study from the Poisson regression model chosen in part 2. Compare this to the estimate of the  probability of having at least one living child for each women in the study using the Logistic regression model chosen in part 7. (Note: Due to the number of women in the study, do not provide a table of all the estimated probabilities. Instead focus on graphical visualizations to determine any similarities and differences.) (4 marks)
+```
 
 
 
