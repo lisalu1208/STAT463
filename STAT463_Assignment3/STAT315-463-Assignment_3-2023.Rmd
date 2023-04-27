@@ -114,9 +114,11 @@ $$
 8. If $Y$ is Poisson distributed with parameter $\lambda$, then $\Pr(Y > 0) = 1 -e^{-\lambda}$. Use this to construct estimates of the probability of having at least one living child for each women in the study from the Poisson regression model chosen in part 2. Compare this to the estimate of the probability of having at least one living child for each women in the study using the Logistic regression model chosen in part 7. (Note: Due to the number of women in the study, do not provide a table of all the estimated probabilities. Instead focus on graphical visualizations to determine any similarities and differences.) (4 marks)
 ```{r}
 pred_glm <- predict(poisson_model1, type = "response")
-summary(pred_glm)
+prob_glm <- (1 - exp(-pred_glm)) * 100
+summary(prob_glm)
 pred_lr <- predict(lr1, type="response")
-summary(pred_lr)
+prob_lr <- log(pred_lr, 1-pred_lr)
+
 ```
 As we can see from the summary, the 
 
