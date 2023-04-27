@@ -38,9 +38,10 @@ The response variable is the number of living children *livch* (0, 1, 2, 3, 4, 5
 ```{r}
 # Read in data
 dataset <- read.csv("Contraception315.csv")
-# Convert District variable into factor
-dataset$district <- as.factor(dataset$district)
-dataset$urban <- as.factor(dataset$urban)
+# Convert District and urban variables into factor
+dataset$district <- factor(dataset$district, levels = unique(dataset$district))
+dataset$urban <- factor(dataset$urban, levels = unique(dataset$urban))
+str(dataset)
 # Fit a Poisson Regression
 poisson_model <- glm(formula = livch ~ district + use + urban + age, 
                      data = dataset, family = poisson)
