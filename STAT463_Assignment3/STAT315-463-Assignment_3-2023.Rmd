@@ -38,8 +38,7 @@ The response variable is the number of living children *livch* (0, 1, 2, 3, 4, 5
 ```{r}
 # Read in data
 dataset <- read.csv("Contraception315.csv")
-# Convert District variables into factor
-# dataset$district <- factor(dataset$district, levels = unique(dataset$district))
+# Convert District variable into factor
 dataset$district <- as.factor(dataset$district)
 str(dataset)
 # Fit a Poisson Regression
@@ -58,8 +57,15 @@ poisson_model1 <- step(glm(livch ~ 1, data = dataset, family = poisson()), direc
                       scope = list(lower = poisson2, upper = poisson_model))
 summary(poisson_model1)
 ```
+Here the forward model selection was used. The most significant variable here is the age of the women, followed by the contraceptive use. The other two less significant variables are living in district 14 and living in the urban. 
+$$
+log[livch] = 0.705 + 0.066*age + 0.347*useY - 0.264*district14 - 0.178*urbanY 
+$$
+
 
 3. For the model chosen in 2, provide an interpretation of the regression coefficients, on both the link scale and the response scale. Include 95 \% confidence intervals (4 marks)
+
+Because there is not much information on the district, it is not much considered here.
 ```{r}
 
 ```
