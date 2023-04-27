@@ -38,13 +38,13 @@ The response variable is the number of living children *livch* (0, 1, 2, 3, 4, 5
 ```{r}
 # Read in data
 dataset <- read.csv("Contraception315.csv")
-# Convert District and urban variables into factor
-dataset$district <- factor(dataset$district, levels = unique(dataset$district))
-dataset$urban <- factor(dataset$urban, levels = unique(dataset$urban))
+# Convert District variables into factor
+# dataset$district <- factor(dataset$district, levels = unique(dataset$district))
+dataset$district <- as.factor(dataset$district)
 str(dataset)
 # Fit a Poisson Regression
 poisson_model <- glm(formula = livch ~ district + use + urban + age, 
-                     data = dataset, family = poisson)
+                     data = dataset, family = poisson())
 summary(poisson_model)
 ```
    
@@ -52,17 +52,10 @@ summary(poisson_model)
 2. Apply either forward or backward selection to determine the most appropriate model for this data. For the chosen model, write down the model equation. (2 marks)
 ```{r}
 library(MASS)
-# The minimum model
-poisson_model1 <- glm(formula = livch ~ 1, family = poisson, data = dataset)
 # Apply the backward selection
-poisson_back <- stepAIC(poisson_model, direction = 'backward', 
-                scope = list(upper = poisson_model,lower = poisson_model1))
-summary(poisson_back)
+poisson1 <- step(poisson_model, direction="backward",scope = list(lower = ~1, upper = poisson_model))
+summary(poisson1)
 ```
-The backward selection suggested three variables: *use*, *urban*, and *age*. The equation is shown as below:
-$$
-Livch = 0.65 + 0.31*use - 0.24*urban + 0.06*age
-$$
 
 3. For the model chosen in 2, provide an interpretation of the regression coefficients, on both the link scale and the response scale. Include 95 \% confidence intervals (4 marks)
 
