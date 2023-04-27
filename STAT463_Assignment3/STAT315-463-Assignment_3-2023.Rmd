@@ -52,12 +52,18 @@ summary(poisson_model)
 2. Apply either forward or backward selection to determine the most appropriate model for this data. For the chosen model, write down the model equation. (2 marks)
 ```{r}
 library(MASS)
-# Apply the backward selection
-poisson1 <- step(poisson_model, direction="backward",scope = list(lower = ~1, upper = poisson_model))
-summary(poisson1)
+# Apply the forward selection
+
+poisson_model1 <- step(glm(livch ~ 1, data = dataset, family = poisson()), direction = "forward", 
+                      scope = list(lower = poisson2, upper = poisson_model))
+summary(poisson_model1)
 ```
 
 3. For the model chosen in 2, provide an interpretation of the regression coefficients, on both the link scale and the response scale. Include 95 \% confidence intervals (4 marks)
+```{r}
+
+```
+
 
 The coefficient of variable **Use** is 0.28, with the standard deviation of 0.06350. \\
 Use: $e^{0.31} = 1.36$ \\
