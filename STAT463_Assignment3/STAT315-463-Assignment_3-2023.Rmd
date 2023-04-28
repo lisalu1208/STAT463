@@ -67,7 +67,7 @@ $$
 
 Here, three variables are discussed here, namely, **age**, **use**, and **urban**. Because there is not much information on the district, it is not much considered here.
 
-As we can see from the coefficients of the variables in model chosen in Q2, 
+As we can see from the coefficients of the variables in model chosen in Q2, age and use have positive correlation with the number of living children, whereas the negative sign of urban suggests that it has a negative correlation with the number rate of living children.
 ```{r}
 # Age
 age_response <- (exp(poisson_model1$coefficients['age']) - 1) * 100; age_response 
