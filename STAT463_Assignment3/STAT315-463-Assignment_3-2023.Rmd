@@ -11,6 +11,7 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 \vspace{-8 mm}
 **Due date: Friday 28 April 2023**  
 \vspace{-7 mm}
@@ -56,7 +57,7 @@ poisson_null <- glm(livch ~ 1, data = dataset, family = poisson())
 poisson_model1 <- step(poisson_full, direction = "backward")
 summary(poisson_model1)
 ```
-Here the backward selection was used. The most significant variable here is the age of the women, followed by the contraceptive use. The other two less significant variables are living in district 14 and living in the urban. 
+Here the backward selection was used. The most significant variable here is the age of the women, followed by the contraceptive use. The other two less significant variables are living in district 14 and living in the urban. The equation is shown as:
 $$
 log(livch) = 0.705 + 0.066*age + 0.347*useY - 0.264*district14 - 0.178*urbanY 
 $$
@@ -71,7 +72,7 @@ As we can see from the coefficients of the variables in model chosen in Q2, age 
 # Age
 age_response <- (exp(poisson_model1$coefficients['age']) - 1) * 100; age_response 
 ```
-This indicates that each increase of age is associated with 6.77% more rate of living children. 
+This indicates that each increase of age is associated with 6.77\% more rate of living children. 
 
 ```{r}
 # useY
@@ -80,7 +81,7 @@ use_response <- (exp(poisson_model1$coefficients['useY']) - 1) * 100; use_respon
 (exp(poisson_model1$coefficients['useY'] - 2 * 0.0676) - 1) * 100
 (exp(poisson_model1$coefficients['useY'] + 2 * 0.0676) - 1) * 100
 ```
-The number here suggests that the contraceptive use is associated with an increase of 41.55% in living children rate among Bangladeshi women. The 95% confidence interval shows that the use of contraception are expected an increase between 23.65 and 62.04% in the rate of numbers of living children. 
+The number here suggests that the contraceptive use is associated with an increase of 41.55\% in living children rate among Bangladeshi women. The 95\% confidence interval shows that the use of contraception are expected an increase between 23.65 and 62.04\% in the rate of numbers of living children. 
 
 ```{r}
 # urbanY
@@ -89,13 +90,21 @@ urban_response <- (exp(-poisson_model1$coefficients['urbanY']) - 1) * 100; urban
 (exp(-poisson_model1$coefficients['urbanY'] - 2 * 0.0788) - 1) * 100
 (exp(-poisson_model1$coefficients['urbanY'] + 2 * 0.0788) - 1) * 100
 ```
-This can be interpreted that living in the urban area is associated with a reduction of 19.51% in the rate of the number of living children among Bangladeshi women. Also, from the 95% confidence interval, we can know that there is a decrease between 2.09 and 39.91% of the number rate of living children for the women living in the urban to those who are not.
+This can be interpreted that living in the urban area is associated with a reduction of 19.51\% in the rate of the number of living children among Bangladeshi women. Also, from the 95\% confidence interval, we can know that there is a decrease between 2.09 and 39.91\% of the number rate of living children for the women living in the urban to those who are not.
+
+\newpage
 
 4. Describe what the implication of unaccounted overdispersion would be for any inference made. Comment on whether you believe overdispersion is present in this dataset. Describe how you would change your analysis to deal with overdispersion.  (4 marks)
 ```{r}
 summary(poisson_model1)
 ```
-Overdispersion can be detected by dividing the residual deviance by the degrees of freedoms. The residual deviance is 618.13 for 445 degrees of freedom. The ratio of deviance to df here is 1.39, indicating overdispersion. One potential approach to deal with overdispersion is to use negative binomial model. This is ideal for modelling count data with overdispersion, which explicitly models the overdispersion that happens in the dataset. 
+Overdispersion would cause standard errors to be underestimated and there is a tendency leading to overconfidence in results. 
+
+It can be detected by dividing the residual deviance by the degrees of freedoms. The residual deviance here is 618.13 for 445 degrees of freedom. The ratio of deviance to df here is 1.39, indicating overdispersion. 
+
+One potential approach to deal with overdispersion is to use negative binomial model. This is ideal for modelling count data with overdispersion, which explicitly models the overdispersion that happens in the dataset. 
+
+
 
 5. You are later told that the researchers in comparisons between women without children and women with children. Create a new variable \texttt{child} such that a \texttt{0} indicates a women with no living children, and \texttt{1} indicates a women with at least one living child. (1 mark)
 ```{r,warning=FALSE, message=FALSE}
@@ -105,6 +114,7 @@ dataset1 <- dataset %>%
                            livch > 0 ~ 1))
 head(dataset1)
 ```
+
 
 
 6. Fit a Logistic Regression including all possible predictor variables and \texttt{child} as the response. (1 mark)
@@ -121,17 +131,19 @@ lr1 <- stepAIC(lr_full, direction = 'backward',
                 scope = list(upper = lr_full,lower = lr_null))
 summary(lr1)
 ```
+
 Here the backward selection was used. The chosen variables were quite similar to the previous model. The equation in this case is shown below:
 $$
-Logit[child] = 1.978 + 0.262*age + 1.024*useY-0.691*urbanY
+Logit(child) = 1.978 + 0.262*age + 1.024*useY-0.691*urbanY
 $$
 
+\newpage
 
 8. If $Y$ is Poisson distributed with parameter $\lambda$, then $\Pr(Y > 0) = 1 -e^{-\lambda}$. Use this to construct estimates of the probability of having at least one living child for each women in the study from the Poisson regression model chosen in part 2. Compare this to the estimate of the probability of having at least one living child for each women in the study using the Logistic regression model chosen in part 7. (Note: Due to the number of women in the study, do not provide a table of all the estimated probabilities. Instead focus on graphical visualizations to determine any similarities and differences.) (4 marks)
 ```{r}
-pred_glm <- predict(poisson_model1, type = "response")
-prob_glm <- (1 - exp(-pred_glm)) * 100
-summary(prob_glm)
+pred_pois <- predict(poisson_model1, type = "response")
+prob_pois <- (1 - exp(-pred_pois)) * 100
+summary(prob_pois)
 pred_lr <- predict(lr1, type="response")
 prob_lr <- exp(pred_lr) / (1+exp(pred_lr)) * 100
 summary(prob_lr)
@@ -139,17 +151,18 @@ summary(prob_lr)
 From the two summaries above, it is noticeable that the estimates of probabilities using poisson model are much higher than the ones using logistic regression. 
 
 ```{r}
-plot(dataset, pred_glm)
-
+plot(prob_pois, prob_lr, col = c('red', 'blue'))
 ```
 
-One of the reasons is because the 
+
 ```{r}
-summary(dataset[,2:6])
+mean(dataset$livch)
+var(dataset$livch)
 ```
+
+The mean of the **livch** variable is about 2.3, and the variance is almost double the mean value, which shows that there is overdispersion in the model.
 
 ```{r}
 hist(dataset$livch)
 ```
-
-
+Besides, from the frequency plot of **livch** variable, we can see that the value of 0 appears much more frequently than any other values, i.e., the numbers of zeros cannot be accommodated properly by a Poisson regression model. This is also the reason why there is such a big difference between the poisson model and logistic regression model, as poisson model did not expect the rich data in 0s. 
