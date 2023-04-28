@@ -69,7 +69,12 @@ Here, three variables are discussed here, namely, **age**, **use**, and **urban*
 
 As we can see from the coeffients of the variables in model chosen in Q2, 
 ```{r}
-
+# Age
+exp(poisson_model1$coefficients['age'])
+# useY
+exp(poisson_model1$coefficients['useY'])
+# urbanY
+exp(-poisson_model1$coefficients['urbanY'])
 ```
 
 
@@ -80,7 +85,7 @@ Age: $e^{0.06} = 1.06$
 
 4. Describe what the implication of unaccounted overdispersion would be for any inference made. Comment on whether you believe overdispersion is present in this dataset. Describe how you would change your analysis to deal with overdispersion.  (4 marks)
 ```{r}
-summary(poisson_back)
+summary(poisson_model1)
 ```
 Overdispersion can be detected by dividing the residual deviance by the degrees of freedoms. Here we can see that there is overdispersion present in this dataset. One potential approach to deal with overdispersion is to use negative binomial model, which explicitly models the overdispersion that happens in the dataset. 
 
