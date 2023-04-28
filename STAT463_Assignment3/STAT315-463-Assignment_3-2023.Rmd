@@ -126,9 +126,9 @@ pred_glm <- predict(poisson_model1, type = "response")
 prob_glm <- (1 - exp(-pred_glm)) * 100
 summary(prob_glm)
 pred_lr <- predict(lr1, type="response")
-prob_lr <- log(pred_lr, 1-pred_lr)
-
+prob_lr <- exp(pred_lr) / (1+exp(pred_lr)) * 100
+summary(prob_lr)
 ```
-As we can see from the summary, the 
+From the two summaries above, it is noticeable that the estimates of probabilities using poisson model are much higher than the ones using logistic regression.
 
 
