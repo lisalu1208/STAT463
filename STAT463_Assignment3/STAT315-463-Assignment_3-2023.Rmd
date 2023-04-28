@@ -53,11 +53,10 @@ summary(poisson_full)
 library(MASS)
 # Apply the forward selection
 poisson_null <- glm(livch ~ 1, data = dataset, family = poisson())
-poisson_model1 <- step(poisson_null, direction = "forward", 
-                      scope = list(lower = poisson_null, upper = poisson_full))
+poisson_model1 <- step(poisson_full, direction = "backward")
 summary(poisson_model1)
 ```
-Here the forward model selection was used. The most significant variable here is the age of the women, followed by the contraceptive use. The other two less significant variables are living in district 14 and living in the urban. 
+Here the backward selection was used. The most significant variable here is the age of the women, followed by the contraceptive use. The other two less significant variables are living in district 14 and living in the urban. 
 $$
 log(livch) = 0.705 + 0.066*age + 0.347*useY - 0.264*district14 - 0.178*urbanY 
 $$
@@ -96,7 +95,7 @@ This can be interpreted that living in the urban area is associated with a reduc
 ```{r}
 summary(poisson_model1)
 ```
-Overdispersion can be detected by dividing the residual deviance by the degrees of freedoms. Here we can see that there is overdispersion present in this dataset. One potential approach to deal with overdispersion is to use negative binomial model, which explicitly models the overdispersion that happens in the dataset. 
+Overdispersion can be detected by dividing the residual deviance by the degrees of freedoms. The residual deviance is 618.13 for 445 degrees of freedom. The ratio of deviance to df here is 1.39, indicating overdispersion. One potential approach to deal with overdispersion is to use negative binomial model. This is ideal for modelling count data with overdispersion, which explicitly models the overdispersion that happens in the dataset. 
 
 5. You are later told that the researchers in comparisons between women without children and women with children. Create a new variable \texttt{child} such that a \texttt{0} indicates a women with no living children, and \texttt{1} indicates a women with at least one living child. (1 mark)
 ```{r,warning=FALSE, message=FALSE}
@@ -137,6 +136,20 @@ pred_lr <- predict(lr1, type="response")
 prob_lr <- exp(pred_lr) / (1+exp(pred_lr)) * 100
 summary(prob_lr)
 ```
-From the two summaries above, it is noticeable that the estimates of probabilities using poisson model are much higher than the ones using logistic regression.
+From the two summaries above, it is noticeable that the estimates of probabilities using poisson model are much higher than the ones using logistic regression. 
+
+```{r}
+plot(dataset, pred_glm)
+
+```
+
+One of the reasons is because the 
+```{r}
+summary(dataset[,2:6])
+```
+
+```{r}
+hist(dataset$livch)
+```
 
 
