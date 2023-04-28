@@ -67,21 +67,23 @@ $$
 
 Here, three variables are discussed here, namely, **age**, **use**, and **urban**. Because there is not much information on the district, it is not much considered here.
 
-As we can see from the coeffients of the variables in model chosen in Q2, 
+As we can see from the coefficients of the variables in model chosen in Q2, 
 ```{r}
 # Age
-exp(poisson_model1$coefficients['age'])
-# useY
-exp(poisson_model1$coefficients['useY'])
-# urbanY
-exp(-poisson_model1$coefficients['urbanY'])
+age_response <- (exp(poisson_model1$coefficients['age']) - 1) * 100; age_response 
 ```
+This indicates that each 
+```{r}
+# useY
+use_response <- (exp(poisson_model1$coefficients['useY']) - 1) * 100; use_response  
+```
+The number here suggests that the contraceptive use is associated with an increase of 41.55% in living children rate among Bangladeshi women.
 
-
-The coefficient of variable **Use** is 0.28, with the standard deviation of 0.06350. \\
-Use: $e^{0.31} = 1.36$ \\
-Urban: $e^{-0.24} = 0.79$ \\
-Age: $e^{0.06} = 1.06$
+```{r}
+# urbanY
+urban_response <- (exp(-poisson_model1$coefficients['urbanY']) - 1) * 100; urban_response
+```
+This can be interpreted that living in the urban area is associated with a reduction of 19.51% in the rate of the number of living children among Bangladeshi women.
 
 4. Describe what the implication of unaccounted overdispersion would be for any inference made. Comment on whether you believe overdispersion is present in this dataset. Describe how you would change your analysis to deal with overdispersion.  (4 marks)
 ```{r}
