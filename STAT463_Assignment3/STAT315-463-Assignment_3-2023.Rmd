@@ -67,10 +67,21 @@ $$
 
 Here, three variables are discussed here, namely, **age**, **use**, and **urban**. Because there is not much information on the district, it is not much considered here.
 
+<<<<<<< Updated upstream
 As we can see from the coefficients of the variables in model chosen in Q2, age and use have positive correlation with the number of living children, whereas the negative sign of urban suggests that it has a negative correlation with the number rate of living children.
 ```{r}
 # Age
 age_response <- (exp(poisson_model1$coefficients['age']) - 1) * 100; age_response 
+=======
+As we can see from the coeffients of the variables in model chosen in Q2, **age** and **use** have positive signs, which indicates that the age and the contraceptive use increase the number of living children. Similarly, with the negative signs, **district14** and **urban** have negative effect on the number of the living children. 
+
+To calculate the response scale, exp() function is used here.
+```{r}
+# age
+exp(poisson_model1$coefficients['age'])
+# use
+exp(poisson_model1$coefficients['use'])
+>>>>>>> Stashed changes
 ```
 This indicates that each 
 ```{r}
