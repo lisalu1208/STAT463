@@ -67,34 +67,30 @@ $$
 
 Here, three variables are discussed here, namely, **age**, **use**, and **urban**. Because there is not much information on the district, it is not much considered here.
 
-<<<<<<< Updated upstream
 As we can see from the coefficients of the variables in model chosen in Q2, age and use have positive correlation with the number of living children, whereas the negative sign of urban suggests that it has a negative correlation with the number rate of living children.
 ```{r}
 # Age
 age_response <- (exp(poisson_model1$coefficients['age']) - 1) * 100; age_response 
-=======
-As we can see from the coeffients of the variables in model chosen in Q2, **age** and **use** have positive signs, which indicates that the age and the contraceptive use increase the number of living children. Similarly, with the negative signs, **district14** and **urban** have negative effect on the number of the living children. 
-
-To calculate the response scale, exp() function is used here.
-```{r}
-# age
-exp(poisson_model1$coefficients['age'])
-# use
-exp(poisson_model1$coefficients['use'])
->>>>>>> Stashed changes
 ```
-This indicates that each 
+This indicates that each increase of age is associated with 6.77% more rate of living children. 
+
 ```{r}
 # useY
 use_response <- (exp(poisson_model1$coefficients['useY']) - 1) * 100; use_response  
+# 95% confidence interval with SE of 0.0676
+(exp(poisson_model1$coefficients['useY'] - 2 * 0.0676) - 1) * 100
+(exp(poisson_model1$coefficients['useY'] + 2 * 0.0676) - 1) * 100
 ```
-The number here suggests that the contraceptive use is associated with an increase of 41.55% in living children rate among Bangladeshi women.
+The number here suggests that the contraceptive use is associated with an increase of 41.55% in living children rate among Bangladeshi women. The 95% confidence interval shows that the use of contraception are expected an increase between 23.65 and 62.04% in the rate of numbers of living children. 
 
 ```{r}
 # urbanY
 urban_response <- (exp(-poisson_model1$coefficients['urbanY']) - 1) * 100; urban_response
+# 95% confidence interval with SE of 0.0788
+(exp(-poisson_model1$coefficients['urbanY'] - 2 * 0.0788) - 1) * 100
+(exp(-poisson_model1$coefficients['urbanY'] + 2 * 0.0788) - 1) * 100
 ```
-This can be interpreted that living in the urban area is associated with a reduction of 19.51% in the rate of the number of living children among Bangladeshi women.
+This can be interpreted that living in the urban area is associated with a reduction of 19.51% in the rate of the number of living children among Bangladeshi women. Also, from the 95% confidence interval, we can know that there is a decrease between 2.09 and 39.91% of the number rate of living children for the women living in the urban to those who are not.
 
 4. Describe what the implication of unaccounted overdispersion would be for any inference made. Comment on whether you believe overdispersion is present in this dataset. Describe how you would change your analysis to deal with overdispersion.  (4 marks)
 ```{r}
@@ -130,6 +126,7 @@ Here the backward selection was used. The chosen variables were quite similar to
 $$
 Logit[child] = 1.978 + 0.262*age + 1.024*useY-0.691*urbanY
 $$
+
 
 8. If $Y$ is Poisson distributed with parameter $\lambda$, then $\Pr(Y > 0) = 1 -e^{-\lambda}$. Use this to construct estimates of the probability of having at least one living child for each women in the study from the Poisson regression model chosen in part 2. Compare this to the estimate of the probability of having at least one living child for each women in the study using the Logistic regression model chosen in part 7. (Note: Due to the number of women in the study, do not provide a table of all the estimated probabilities. Instead focus on graphical visualizations to determine any similarities and differences.) (4 marks)
 ```{r}
