@@ -18,7 +18,7 @@ library(ggplot2)
 
 
 ```{r}
-# Data preparation
+# Read in dataset
 tern14 <- read.table("Terns2014.csv", header = TRUE, sep = ',', na.strings = "na")
 head(tern14)
 tabulate(tern14$ID)
