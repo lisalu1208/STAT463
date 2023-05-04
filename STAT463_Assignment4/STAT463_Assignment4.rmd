@@ -53,9 +53,13 @@ model1_coefs <- coef(Model.1)$ID %>%
 
 # See coefficients
 summary(model1_coefs)
+
+hist(model1_coefs$Intercept)
 ```
 
 ## Model 2: Random slopes
+
+In this case, we are expecting all terns to start off at around the same point, but the effects of wing length on age differs across each tern.
 
 ```{r}
 Model.2 <- lmer(Age ~ Wing + (0 + Wing|ID), data = tern14)
@@ -85,6 +89,6 @@ model3_coefs <- coef(Model.3)$ID %>%
   rename(Intercept = '(Intercept)', Slope=Wing) %>%
   rownames_to_column("ID")
 
-summary(model3_coefs)
+plot(model3_coefs$Intercept, model3_coefs$Slope)
 ```
 
