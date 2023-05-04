@@ -37,13 +37,16 @@ AIC(Model)
 ```{r cars}
 Model.1 <- lmer(Age ~ Wing + (1|ID), data = tern14)
 summary(Model.1)
-AIC(Model.1)
 ```
 
 In Model 1, we are looking at the fixed effect of **Wing** with the random intercepts.
 Besides, the AIC value of this mixed linear model indicates that it fits better than the model that ignores individual effects. 
-Fixed Effects:
-Random Effects: Around 88.4\% of variability is explained by the random intercepts.
+**Fixed Effects**: 
+**Random Effects**: Around 88.4\% of variability is explained by the random intercepts. 
+
+```{r}
+AIC(Model.1)
+```
 
 
 ```{r}
@@ -52,9 +55,10 @@ model1_coefs <- coef(Model.1)$ID %>%
   rownames_to_column("ID")
 
 # See coefficients
-summary(model1_coefs)
+summary(model1_coefs$Intercept)
 
 hist(model1_coefs$Intercept)
+
 ```
 
 ## Model 2: Random slopes
@@ -76,6 +80,12 @@ summary(model2_coefs)
 hist(model2_coefs$Slope)
 ```
 
+```{r}
+qqnorm(resid(Model.2))
+qqline(resid(Model.2))
+```
+
+
 ## Model 3: Random slopes and intercepts
 
 ```{r}
@@ -91,5 +101,20 @@ model3_coefs <- coef(Model.3)$ID %>%
   rownames_to_column("ID")
 
 plot(model3_coefs$Intercept, model3_coefs$Slope)
+```
+
+```{r}
+
+
+qqnorm(resid(Model.1))
+qqline(resid(Model.1))
+
+
+qqnorm(resid(Model.2))
+qqline(resid(Model.2))
+
+
+qqnorm(resid(Model.3))
+qqline(resid(Model.3))
 ```
 
