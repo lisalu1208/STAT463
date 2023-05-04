@@ -18,25 +18,42 @@ library(ggplot2)
 
 
 ```{r}
-# Read in dataset
+# Read in data file
 tern14 <- read.table("Terns2014.csv", header = TRUE, sep = ',', na.strings = "na")
-head(tern14)
-tabulate(tern14$ID)
 ```
 
+```{r}
+# Only using Linear Regression
+Model <- lm(Age ~ Wing * ID, data = tern14)
+summary(Model)
+AIC(Model)
+```
 
 ## Model 1: Random intercepts
 
 ```{r cars}
 Model.1 <- lmer(Age ~ Wing + (1|ID), data = tern14)
 summary(Model.1)
+AIC(Model.1)
 ```
+
+In Model 1, we are looking at the fixed effect of **Wing** with the random intercepts.
+Besides, the AIC value of this mixed linear model indicates that it fits better than the model that ignores individual effects. 
+Fixed Effects:
+Random Effects: Around 88.4\% of variability is explained by the random intercepts.
+From the results above, we can see that 
+
+```{r}
+ggplot(fortify(Model.1), aes(Wing, Age)) + 
+```
+
 
 ## Model 2: Random slopes
 
 ```{r}
 Model.2 <- lmer(Age ~ Wing + (0 + Wing|ID), data = tern14)
 summary(Model.2)
+AIC(Model.2)
 ```
 
 ## Model 3: Random slopes and intercepts
@@ -44,5 +61,7 @@ summary(Model.2)
 ```{r}
 Model.3 <- lmer(Age ~ Wing + (1 + Wing|ID), data = tern14)
 summary(Model.3)
+AIC(Model.3)
 ```
 
+From the AIC result above, we can see that this model with random slopes and random intercepts has the best fit.
