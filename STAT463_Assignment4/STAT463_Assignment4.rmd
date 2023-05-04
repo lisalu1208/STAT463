@@ -73,6 +73,7 @@ model2_coefs <- coef(Model.2)$ID %>%
   rownames_to_column("ID")
 
 summary(model2_coefs)
+hist(model2_coefs$Slope)
 ```
 
 ## Model 3: Random slopes and intercepts
