@@ -13,6 +13,8 @@ library(here)
 library(lattice)
 library(lme4)
 library(ggplot2)
+
+library(tidyverse)
 ```
 
 
@@ -20,6 +22,7 @@ library(ggplot2)
 ```{r}
 # Read in data file
 tern14 <- read.table("Terns2014.csv", header = TRUE, sep = ',', na.strings = "na")
+summary(tern14)
 ```
 
 ```{r}
@@ -41,12 +44,16 @@ In Model 1, we are looking at the fixed effect of **Wing** with the random inter
 Besides, the AIC value of this mixed linear model indicates that it fits better than the model that ignores individual effects. 
 Fixed Effects:
 Random Effects: Around 88.4\% of variability is explained by the random intercepts.
-From the results above, we can see that 
+
 
 ```{r}
-ggplot(fortify(Model.1), aes(Wing, Age)) + 
-```
+model1_coefs <- coef(Model.1)$ID %>%
+  rename(Intercept = '(Intercept)', Slope = Wing) %>%
+  rownames_to_column("ID")
 
+# See coefficients
+summary(model1_coefs)
+```
 
 ## Model 2: Random slopes
 
@@ -54,6 +61,14 @@ ggplot(fortify(Model.1), aes(Wing, Age)) +
 Model.2 <- lmer(Age ~ Wing + (0 + Wing|ID), data = tern14)
 summary(Model.2)
 AIC(Model.2)
+```
+
+```{r}
+model2_coefs <- coef(Model.2)$ID %>%
+  rename(Intercept = '(Intercept)', Slope=Wing) %>%
+  rownames_to_column("ID")
+
+summary(model2_coefs)
 ```
 
 ## Model 3: Random slopes and intercepts
@@ -65,3 +80,11 @@ AIC(Model.3)
 ```
 
 From the AIC result above, we can see that this model with random slopes and random intercepts has the best fit.
+```{r}
+model3_coefs <- coef(Model.3)$ID %>%
+  rename(Intercept = '(Intercept)', Slope=Wing) %>%
+  rownames_to_column("ID")
+
+summary(model3_coefs)
+```
+
