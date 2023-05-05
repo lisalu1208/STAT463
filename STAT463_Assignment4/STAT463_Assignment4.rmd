@@ -22,7 +22,6 @@ library(tidyverse)
 ```{r}
 # Read in data file
 tern14 <- read.table("Terns2014.csv", header = TRUE, sep = ',', na.strings = "na")
-summary(tern14)
 ```
 
 ```{r}
@@ -36,18 +35,19 @@ AIC(Model)
 
 ```{r cars}
 Model.1 <- lmer(Age ~ Wing + (1|ID), data = tern14)
-summary(Model.1)
+AIC(Model.1)
 ```
 
 In Model 1, we are looking at the fixed effect of **Wing** with the random intercepts.
 Besides, the AIC value of this mixed linear model indicates that it fits better than the model that ignores individual effects. 
-**Fixed Effects**: 
-**Random Effects**: Around 88.4\% of variability is explained by the random intercepts. 
 
 ```{r}
-AIC(Model.1)
+summary(Model.1)
 ```
 
+**Random Effects**: Around 88.4\% of variability is explained by the random intercepts. The variance of residual shows that there are still some factors from the simple body measurements of terns which affect age and cannot be explained by the model. This value is pretty close to zero, which     
+
+**Fixed Effects**: The intercept in the summary above shows that the average tern's wing length when they are born is 2.97 mm and the slope suggests that in average, each increase in wing length by 1 mm takes 0.14 days. 
 
 ```{r}
 model1_coefs <- coef(Model.1)$ID %>%
@@ -67,8 +67,10 @@ In this case, we are expecting all terns to start off at around the same point, 
 
 ```{r}
 Model.2 <- lmer(Age ~ Wing + (0 + Wing|ID), data = tern14)
-summary(Model.2)
 AIC(Model.2)
+```
+```{r}
+summary(Model.2)
 ```
 
 ```{r}
