@@ -49,6 +49,7 @@ summary(Model.1)
 
 **Fixed Effects**: The intercept in the summary above shows that the average tern's wing length when they are born is 2.97 mm and the slope suggests that in average, each increase in wing length by 1 mm takes 0.14 days. 
 
+
 ```{r}
 model1_coefs <- coef(Model.1)$ID %>%
   rename(Intercept = '(Intercept)', Slope = Wing) %>%
@@ -69,9 +70,14 @@ In this case, we are expecting all terns to start off at around the same point, 
 Model.2 <- lmer(Age ~ Wing + (0 + Wing|ID), data = tern14)
 AIC(Model.2)
 ```
+
+
 ```{r}
 summary(Model.2)
 ```
+**Random Effects**:      
+
+**Fixed Effects**:  
 
 ```{r}
 model2_coefs <- coef(Model.2)$ID %>%
@@ -80,11 +86,6 @@ model2_coefs <- coef(Model.2)$ID %>%
 
 summary(model2_coefs)
 hist(model2_coefs$Slope)
-```
-
-```{r}
-qqnorm(resid(Model.2))
-qqline(resid(Model.2))
 ```
 
 
@@ -97,6 +98,11 @@ AIC(Model.3)
 ```
 
 From the AIC result above, we can see that this model with random slopes and random intercepts has the best fit.
+
+**Random Effects**:       
+
+**Fixed Effects**: 
+
 ```{r}
 model3_coefs <- coef(Model.3)$ID %>%
   rename(Intercept = '(Intercept)', Slope=Wing) %>%
