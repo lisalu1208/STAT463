@@ -13,8 +13,6 @@ library(here)
 library(lattice)
 library(lme4)
 library(ggplot2)
-
-library(tidyverse)
 ```
 
 ```{r}
@@ -45,33 +43,24 @@ The AIC value of this mixed linear model indicates that it fits better than the 
 summary(Model.1)
 ```
 
-**Random Effects**: By using the variability of ID dividing by the sum of variance, we can see that around 88.4\% of variability is explained by the random intercepts. The variance of residual shows that there are still some factors from the simple body measurements of terns which affect age and cannot be explained by the model.     
+**Random Effects**: By looking at the proportion of the random intercept variance compared to the total variance, we can see that around 88.4\% of variability is explained by the random intercepts. The variance of residual shows that there are still some factors from the simple body measurements of terns which affect age and cannot be explained by the model.     
 
 **Fixed Effects**: The intercept in the summary above shows that the average tern's wing length when they are born is 2.97 mm and the slope suggests that in average, each increase in wing length by 1 mm takes 0.14 days. 
 
 
 ```{r}
-model1_coefs <- coef(Model.1)$ID %>%
-  rename(Intercept = '(Intercept)', Slope = Wing) %>%
-  rownames_to_column("ID")
-
-# See coefficients
-summary(model1_coefs$Intercept)
-
-hist(model1_coefs$Intercept)
-
+model1_coef <- coef(Model.1)$ID
+summary(model1_coef)
 ```
 
 ## Model 2: Random slopes
-
-In this case, we are expecting all terns to start off at around the same point, but the effects of wing length on age differs across each tern. 
 
 ```{r}
 Model.2 <- lmer(Age ~ Wing + (0 + Wing|ID), data = tern14)
 AIC(Model.2)
 ```
 
-The AIC value suggests this model outperforms the simple linear regression model, which does not take the different growth rate into consideration. 
+In this case, we are expecting all terns to start off at around the same wing length, but the effects of wing length on age differs across each tern. The AIC value suggests this model outperforms the simple linear regression model, which does not take the different growth rate into consideration. 
 
 ```{r}
 summary(Model.2)
@@ -81,14 +70,8 @@ summary(Model.2)
 **Fixed Effects**:  
 
 ```{r}
-model2_coefs <- coef(Model.2)$ID %>%
-  rename(Intercept = '(Intercept)', Slope=Wing) %>%
-  rownames_to_column("ID")
-
-summary(model2_coefs)
-hist(model2_coefs$Slope)
-
-coef(Model.2)
+model2_coef <- coef(Model.2)$ID
+summary(model2_coef)
 ```
 
 
@@ -96,35 +79,36 @@ coef(Model.2)
 
 ```{r}
 Model.3 <- lmer(Age ~ Wing + (1 + Wing|ID), data = tern14)
-summary(Model.3)
 AIC(Model.3)
 ```
 
-From the AIC result above, we can see that this model with random slopes and random intercepts has the best fit (the smallest AIC value among all four models). It does make sense because each fern has different growth rate and their wing lengths also differ when they were just born. 
+From the AIC result above, we can see that this model with random slopes and random intercepts has the best fit (the smallest AIC value among all four models). It does make sense because each tern has different growth rate and their wing lengths also differ when they were just born. 
+
+```{r}
+summary(Model.3)
+```
+
 
 **Random Effects**:       
 
-**Fixed Effects**: 
+**Fixed Effects**: The estimate values of intercept and wing is
+
+All three mixed linear models suggest a negative correlation between slop and intercept. This means that a tern born with a longer wing tends to have a slower growth of wing length, whereas a tern's wing length will grow faster if it is born with a shorter wing length. 
 
 ```{r}
-model3_coefs <- coef(Model.3)$ID %>%
-  rename(Intercept = '(Intercept)', Slope=Wing) %>%
-  rownames_to_column("ID")
+pardef <- par()
+par(mfrow = c(2,2))
 
-plot(model3_coefs$Intercept, model3_coefs$Slope)
-```
+qqnorm(resid(Model), main = "Simple Linear Regression")
+qqline(resid(Model))
 
-```{r}
-
-qqnorm(resid(Model.1))
+qqnorm(resid(Model.1), main = "LMM with random intercepts")
 qqline(resid(Model.1))
 
-
-qqnorm(resid(Model.2))
+qqnorm(resid(Model.2), main = "LMM with random slopes")
 qqline(resid(Model.2))
 
-
-qqnorm(resid(Model.3))
+qqnorm(resid(Model.3), main = "LMM with random intercepts and slopes")
 qqline(resid(Model.3))
 ```
-
+If we look at the normal Q-Q plots from all these four models, we can notice that with the simple linear regression, 
