@@ -95,6 +95,12 @@ summary(Model.3)
 
 **Fixed Effects**: The estimate values of intercept and wing is
 
+```{r}
+model3_coef <- coef(Model.3)$ID
+summary(model3_coef)
+```
+
+
 All three mixed linear models suggest a negative correlation between slop and intercept. This means that a tern born with a longer wing tends to have a slower growth of wing length, whereas a tern's wing length will grow faster if it is born with a shorter wing length. 
 
 ```{r}
