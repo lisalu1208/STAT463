@@ -17,15 +17,13 @@ library(ggplot2)
 library(tidyverse)
 ```
 
-
-
 ```{r}
 # Read in data file
 tern14 <- read.table("Terns2014.csv", header = TRUE, sep = ',', na.strings = "na")
 ```
 
 ```{r}
-# Only using Linear Regression
+# Only using simple Linear Regression
 Model <- lm(Age ~ Wing * ID, data = tern14)
 summary(Model)
 AIC(Model)
@@ -40,13 +38,14 @@ AIC(Model.1)
 ```
 
 In Model 1, we are looking at the model with the random intercepts, which assume that some terns have more and some have less wing length.
+
 The AIC value of this mixed linear model indicates that it fits better than the model that ignores individual effects (The AIC score of random intercepts model is smaller than the simple linear regression model). 
 
 ```{r}
 summary(Model.1)
 ```
 
-**Random Effects**: Around 88.4\% of variability is explained by the random intercepts. The variance of residual shows that there are still some factors from the simple body measurements of terns which affect age and cannot be explained by the model. This value is pretty close to zero, which     
+**Random Effects**: By using the variability of ID dividing by the sum of variance, we can see that around 88.4\% of variability is explained by the random intercepts. The variance of residual shows that there are still some factors from the simple body measurements of terns which affect age and cannot be explained by the model.     
 
 **Fixed Effects**: The intercept in the summary above shows that the average tern's wing length when they are born is 2.97 mm and the slope suggests that in average, each increase in wing length by 1 mm takes 0.14 days. 
 
@@ -72,7 +71,8 @@ Model.2 <- lmer(Age ~ Wing + (0 + Wing|ID), data = tern14)
 AIC(Model.2)
 ```
 
-The AIC value suggests the 
+The AIC value suggests this model outperforms the simple linear regression model, which does not take the different growth rate into consideration. 
+
 ```{r}
 summary(Model.2)
 ```
@@ -100,7 +100,7 @@ summary(Model.3)
 AIC(Model.3)
 ```
 
-From the AIC result above, we can see that this model with random slopes and random intercepts has the best fit.
+From the AIC result above, we can see that this model with random slopes and random intercepts has the best fit (the smallest AIC value among all four models). It does make sense because each fern has different growth rate and their wing lengths also differ when they were just born. 
 
 **Random Effects**:       
 
@@ -115,7 +115,6 @@ plot(model3_coefs$Intercept, model3_coefs$Slope)
 ```
 
 ```{r}
-
 
 qqnorm(resid(Model.1))
 qqline(resid(Model.1))
