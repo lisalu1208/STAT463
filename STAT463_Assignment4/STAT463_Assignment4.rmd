@@ -1,5 +1,6 @@
 ---
 title: 'Assignment 4 STAT 315-463:  Multivariable Statistical Methods and Applications'
+author: 'Lisa Lu 31088272'
 header-includes:
    - \usepackage{bm}
    - \usepackage{amsmath}
@@ -52,7 +53,7 @@ summary(Model.1)
 model1_coef <- coef(Model.1)$ID
 summary(model1_coef)
 ```
-The intercepts vary from -0.48 to 7.35 with the slope being the same. This suggests that if we assume all the terns have the same grow rate of wing length, some may start off a really small initial wing length, whereas some may need a bigger initial starting point. 
+The intercepts vary from -0.48 to 7.35 with the slope being the same. This suggests that if we assume all the terns have the same grow rate of wing length, some may start off a really small initial wing length, whereas some may need a larger initial starting point. 
 
 ## Model 2: Random slopes
 
@@ -69,17 +70,17 @@ summary(Model.2)
 
 **Random Effects**: From the proportion of random slope variance compared to the total variance, we can see that this value is close to 0, which indicates a low group level information, i.e., the variability here would not benefit much from this random effect.   
 
-**Fixed Effects**: The coefficient estimates suggest a similar linear model compared to other models.  
+**Fixed Effects**: The coefficient estimates suggest a similar model compared to other models. The t values here suggest that the wing length of a tern has a substantial effect on predicting the age of the tern because the t values are significantly different from zero. 
 
 ```{r}
 model2_coef <- coef(Model.2)$ID
 summary(model2_coef)
 ```
-
+When the intercept remains 2.5, namely, when the initial wing length of each tern is 2.53 mm, if the wing length increments by 1 mm, it takes from 0.12 to 0.23 days.  
 
 ## Model 3: Random slopes and intercepts
 
-```{r}
+```{r, warning=FALSE}
 Model.3 <- lmer(Age ~ Wing + (1 + Wing|ID), data = tern14)
 AIC(Model.3)
 ```
@@ -90,18 +91,13 @@ From the AIC result above, we can see that this model with random slopes and ran
 summary(Model.3)
 ```
 
+**Random Effects**: The variance of residual here shows that only a few factors from the wing length measurements that affect the prediction of age cannot be explained by the model. This is pretty good as this value is closer to zero than the other two models. The negative corr value here implies that the estimated values of the random effects are negatively related to each other. In the case, it means that as the random intercept (the initial wing length) increases, the random slope (the growth rate) decreases, and vice versa. 
 
-**Random Effects**:       
+**Fixed Effects**: Here again, the t values suggest the highly significant effect that wing length has on predicting the tern's age.  
 
-**Fixed Effects**: The estimate values of intercept and wing is
-
-```{r}
-model3_coef <- coef(Model.3)$ID
-summary(model3_coef)
-```
+All three mixed linear models suggest a negative correlation between slop and intercept. This means that a tern born with a longer wing tends to have a slower growth of wing length, whereas a tern's wing length will grow faster if it is born with a shorter wing length. This last model shows the strongest correlation between the wing lengths and the ages of terns.
 
 
-All three mixed linear models suggest a negative correlation between slop and intercept. This means that a tern born with a longer wing tends to have a slower growth of wing length, whereas a tern's wing length will grow faster if it is born with a shorter wing length. 
 
 ```{r}
 pardef <- par()
@@ -119,4 +115,10 @@ qqline(resid(Model.2))
 qqnorm(resid(Model.3), main = "LMM with random intercepts and slopes")
 qqline(resid(Model.3))
 ```
-If we look at the normal Q-Q plots from all these four models, we can notice that with the simple linear regression, 
+If we look at the normal Q-Q plots from all these four models, we can notice that with the simple linear regression, the data are skewed. With the other three linear mixed models, we can see the tailed distribution happened, which were probably caused by the skewed response variable (Age in this case). Another reason might be caused by the outliers in the data. From the plots below, we can see that there are few outliers in the original dataset. 
+```{r}
+pardef <- par()
+par(mfrow = c(2,2))
+plot(Model)
+```
+
