@@ -52,6 +52,7 @@ summary(Model.1)
 model1_coef <- coef(Model.1)$ID
 summary(model1_coef)
 ```
+The intercepts vary from -0.48 to 7.35 with the slope being the same. This suggests that if we assume all the terns have the same grow rate of wing length, some may start off a really small initial wing length, whereas some may need a bigger initial starting point. 
 
 ## Model 2: Random slopes
 
@@ -65,9 +66,10 @@ In this case, we are expecting all terns to start off at around the same wing le
 ```{r}
 summary(Model.2)
 ```
-**Random Effects**:      
 
-**Fixed Effects**:  
+**Random Effects**: From the proportion of random slope variance compared to the total variance, we can see that this value is close to 0, which indicates a low group level information, i.e., the variability here would not benefit much from this random effect.   
+
+**Fixed Effects**: The coefficient estimates suggest a similar linear model compared to other models.  
 
 ```{r}
 model2_coef <- coef(Model.2)$ID
