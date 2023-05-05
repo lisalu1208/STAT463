@@ -31,6 +31,7 @@ summary(Model)
 AIC(Model)
 ```
 
+\newpage
 ## Model 1: Random intercepts
 
 ```{r cars}
@@ -38,8 +39,8 @@ Model.1 <- lmer(Age ~ Wing + (1|ID), data = tern14)
 AIC(Model.1)
 ```
 
-In Model 1, we are looking at the fixed effect of **Wing** with the random intercepts.
-Besides, the AIC value of this mixed linear model indicates that it fits better than the model that ignores individual effects. 
+In Model 1, we are looking at the model with the random intercepts, which assume that some terns have more and some have less wing length.
+The AIC value of this mixed linear model indicates that it fits better than the model that ignores individual effects (The AIC score of random intercepts model is smaller than the simple linear regression model). 
 
 ```{r}
 summary(Model.1)
@@ -64,14 +65,14 @@ hist(model1_coefs$Intercept)
 
 ## Model 2: Random slopes
 
-In this case, we are expecting all terns to start off at around the same point, but the effects of wing length on age differs across each tern.
+In this case, we are expecting all terns to start off at around the same point, but the effects of wing length on age differs across each tern. 
 
 ```{r}
 Model.2 <- lmer(Age ~ Wing + (0 + Wing|ID), data = tern14)
 AIC(Model.2)
 ```
 
-
+The AIC value suggests the 
 ```{r}
 summary(Model.2)
 ```
@@ -86,6 +87,8 @@ model2_coefs <- coef(Model.2)$ID %>%
 
 summary(model2_coefs)
 hist(model2_coefs$Slope)
+
+coef(Model.2)
 ```
 
 
