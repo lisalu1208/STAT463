@@ -10,5 +10,8 @@ output:
 ---
 
 
-
+```{r}
+# Read in data file
+initobs <- read.table("initobs.csv", header = TRUE, sep = ',', na.strings = "na")
+```
 
