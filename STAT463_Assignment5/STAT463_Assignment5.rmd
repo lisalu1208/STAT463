@@ -1,0 +1,14 @@
+---
+title: 'Assignment 5 STAT 315-463:  Multivariable Statistical Methods and Applications'
+author: 'Lisa Lu 31088272'
+header-includes:
+   - \usepackage{bm}
+   - \usepackage{amsmath}
+output: 
+  pdf_document:
+    number_sections: no
+---
+
+
+
+
