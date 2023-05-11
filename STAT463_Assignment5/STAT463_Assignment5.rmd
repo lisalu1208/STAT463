@@ -20,10 +20,10 @@ initobs <- read.table("initobs.csv", header = TRUE, sep = ',', na.strings = "na"
 **b) What distribution would be appropriate for these data and why?**
 
 **c) Fit an appropriate random effects model to these data**
-a. Discuss the results of the analysis, include comments about the following:
-i. Scaled residuals
-ii. Random effects
-iii. Fixed effects
-b. What would your overall conclusion be?
+* Item a. Discuss the results of the analysis, include comments about the following:
+  + Item i. Scaled residuals
+  + Item ii. Random effects
+  + Item iii. Fixed effects
+* Item b. What would your overall conclusion be?
 
 **d) Draw graphs of the residuals and the random effects and comment on these.**
