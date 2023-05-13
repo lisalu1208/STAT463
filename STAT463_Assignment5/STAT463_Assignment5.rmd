@@ -16,6 +16,7 @@ initobs <- read.table("initobs.csv", header = TRUE, sep = ',', na.strings = "na"
 ```
 
 **a):Explain why observer should be included in a model as a random effect.**
+The observers are the source of random variation. It is assumed here that these observers are from a random sample selected from a large collection of observers.
 
 **b) What distribution would be appropriate for these data and why?**
 ```{r}
