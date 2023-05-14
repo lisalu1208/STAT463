@@ -23,7 +23,6 @@ observers are from a random sample selected from a large collection of observers
 **b) What distribution would be appropriate for these data and why?**
 ```{r}
 plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps, xlab="Treatment",ylab="Prob of having weed")
-ggplot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps)
 ```
 These data are not continuous, therefore it is not very suitable to use normal linear regression models. 
 
