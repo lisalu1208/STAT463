@@ -16,20 +16,24 @@ initobs <- read.table("initobs.csv", header = TRUE, sep = ',', na.strings = "na"
 ```
 
 **a):Explain why observer should be included in a model as a random effect.**
+
 The observers are the source of random variation. It is assumed here that these 
 observers are from a random sample selected from a large collection of observers.
 
 **b) What distribution would be appropriate for these data and why?**
 ```{r}
-plot(initobs$Trt, initobs$Bc/initobs$Steps, xlab="Treatment",ylab="Prob of having weed")
+plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps, xlab="Treatment",ylab="Prob of having weed")
+ggplot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps)
 ```
+These data are not continuous, therefore it is not very suitable to use normal linear regression models. 
 
 
 **c) Fit an appropriate random effects model to these data**
-* Item a. Discuss the results of the analysis, include comments about the following:
-  + Item i. Scaled residuals
-  + Item ii. Random effects
-  + Item iii. Fixed effects
-* Item b. What would your overall conclusion be?
+
+* a. Discuss the results of the analysis, include comments about the following:
+  + i). Scaled residuals
+  + ii). Random effects
+  + iii). Fixed effects
+* b. What would your overall conclusion be?
 
 **d) Draw graphs of the residuals and the random effects and comment on these.**
