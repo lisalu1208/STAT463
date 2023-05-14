@@ -15,19 +15,39 @@ output:
 initobs <- read.table("initobs.csv", header = TRUE, sep = ',', na.strings = "na")
 ```
 
-**a):Explain why observer should be included in a model as a random effect.**
+**a) Explain why observer should be included in a model as a random effect.**
 
 The observers are the source of random variation. It is assumed here that these 
 observers are from a random sample selected from a large collection of observers.
 
 **b) What distribution would be appropriate for these data and why?**
+From the histogram of the frequency of the buttercup, we can see that it does not follow the normal distribution. Furthermore, because it is the count data of how frequent the buttercup occurs, therefore, this dataset follows the binomial distribution.
 ```{r}
-plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps, xlab="Treatment",ylab="Prob of having weed")
+hist(initobs$Bc)
+
+pardef <- par()
+par(mfrow = c(2,2))
+
+plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps, 
+     xlab="Treatment",ylab="Prob of having Buttercup")
+plot(as.factor(initobs$Farm), initobs$Bc/initobs$Steps, 
+     xlab="Farm", ylab="Prob of having Buttercup")
+plot(as.factor(initobs$Plot), initobs$Bc/initobs$Steps, 
+     xlab="Plot", ylab="Prob of having Buttercup")
+plot(as.factor(initobs$Observer),initobs$Bc/initobs$Steps, 
+     xlab="Observer", ylab="Prob of having Buttercup")
 ```
-These data are not continuous, therefore it is not very suitable to use normal linear regression models. 
+These data are not continuous, therefore it is not very suitable to use normal linear regression models. The underlying relationship between the response variable and the predictor variables is not linear here. The graphs above suggest that 
+Because the buttercup after the treatment will either appear or not appear. Therefore, this dataset is following binomial distribution.
 
 
 **c) Fit an appropriate random effects model to these data**
+```{r}
+m1 <- glmer(cbind(Bc, NotBc) ~ Trt + (1 |Observer) + (1|Farm) + (1|Plot), 
+            family = binomial, data = initobs)
+summary(m1)
+```
+
 
 * a. Discuss the results of the analysis, include comments about the following:
   + i). Scaled residuals
@@ -36,3 +56,11 @@ These data are not continuous, therefore it is not very suitable to use normal l
 * b. What would your overall conclusion be?
 
 **d) Draw graphs of the residuals and the random effects and comment on these.**
+```{r}
+par(mfrow=c(1,3))
+qqnorm(resid(m1, main = "Residual Plot"))
+hist(resid(m1), main = "Histogram of Residuals")
+plot(fitted(m1), resid(m1), xlab = "Fitted", ylab="Residuals")
+abline(0,0)
+```
+
