@@ -44,7 +44,7 @@ Because the buttercup after the treatment will either appear or not appear. Ther
 
 
 **c) Fit an appropriate random effects model to these data**
-If we consider the context of this dataset, we can see that the
+
 ```{r}
 library(lme4)
 Trt <- as.factor(initobs$Trt)
@@ -77,6 +77,6 @@ The plots above show the distribution of the residuals.
 # Create plots of random effects
 re <- ranef(m1)$Observer
 re
-
+coef(m1)
 ```
 
