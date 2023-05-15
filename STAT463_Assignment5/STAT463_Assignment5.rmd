@@ -13,6 +13,8 @@ output:
 ```{r}
 # Read in data file
 initobs <- read.table("initobs.csv", header = TRUE, sep = ',', na.strings = "na")
+plot <- as.factor(initobs$Plot)
+trt <- as.factor(initobs$Trt)
 ```
 
 **a) Explain why observer should be included in a model as a random effect.**
@@ -42,10 +44,13 @@ Because the buttercup after the treatment will either appear or not appear. Ther
 
 
 **c) Fit an appropriate random effects model to these data**
+If we consider the context of this dataset, we can see that the
 ```{r}
 library(lme4)
-m1 <- glmer(cbind(Bc, NotBc) ~ Trt + (1 |Observer) + (1|Farm), 
+Trt <- as.factor(initobs$Trt)
+m1 <- glmer(cbind(Bc, NotBc) ~ trt + (1 |Observer) + (1|Farm), 
             family = binomial, data = initobs)
+
 summary(m1)
 ```
 
@@ -58,10 +63,20 @@ summary(m1)
 
 **d) Draw graphs of the residuals and the random effects and comment on these.**
 ```{r}
+# Create plots of the residuals
 par(mfrow=c(1,3))
 qqnorm(resid(m1, main = "Residual Plot"))
+abline(0,1)
 hist(resid(m1), main = "Histogram of Residuals")
 plot(fitted(m1), resid(m1), xlab = "Fitted", ylab="Residuals")
 abline(0,0)
+```
+The plots above show the distribution of the residuals. 
+
+```{r}
+# Create plots of random effects
+re <- ranef(m1)$Observer
+re
+
 ```
 
