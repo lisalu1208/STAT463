@@ -43,7 +43,8 @@ Because the buttercup after the treatment will either appear or not appear. Ther
 
 **c) Fit an appropriate random effects model to these data**
 ```{r}
-m1 <- glmer(cbind(Bc, NotBc) ~ Trt + (1 |Observer) + (1|Farm) + (1|Plot), 
+library(lme4)
+m1 <- glmer(cbind(Bc, NotBc) ~ Trt + (1 |Observer) + (1|Farm), 
             family = binomial, data = initobs)
 summary(m1)
 ```
