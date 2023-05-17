@@ -19,8 +19,6 @@ trt <- as.factor(initobs$Trt)
 
 **a) Explain why observer should be included in a model as a random effect.**
 
-From the left plot below, we can see that the number of occurrence of each observer varies greatly. The right plot also suggested that the distribution of the percentage of ground covered by the weed differs from each observer. Therefore, the observers are the source of random variation, which should be taken into consideration when choosing the model as it brings potential effects on the relationship between the control of the weed and the different treatments. 
-
 ```{r}
 pardef <- par()
 par(mfrow = c(1,2))
@@ -28,6 +26,8 @@ plot(as.factor(initobs$Observer), xlab="Observer", ylab="Count")
 plot(as.factor(initobs$Observer),initobs$Bc/initobs$Steps * 100, 
      xlab="Observer", ylab="% of ground cover of the weed")
 ```
+
+From the left plot above, we can see that the number of occurrence of each observer varies greatly. The right plot also suggested that the distribution of the percentage of ground covered by the weed differs from each observer. Therefore, the observers are the source of random variation, which should be taken into consideration when choosing the model as it brings potential effects on the relationship between the control of the weed and the different treatments. 
 
 **b) What distribution would be appropriate for these data and why?**
 From the histogram of the frequency of the buttercup, we can see that it does not follow the normal distribution. Furthermore, because it is the count data of how frequent the buttercup occurs, therefore, this dataset follows the binomial distribution.
