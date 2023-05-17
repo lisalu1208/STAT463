@@ -13,8 +13,6 @@ output:
 ```{r}
 # Read in data file
 initobs <- read.table("initobs.csv", header = TRUE, sep = ',', na.strings = "na")
-plot <- as.factor(initobs$Plot)
-trt <- as.factor(initobs$Trt)
 ```
 
 **a) Explain why observer should be included in a model as a random effect.**
@@ -31,13 +29,19 @@ From the left plot above, we can see that the number of occurrence of each obser
 
 **b) What distribution would be appropriate for these data and why?**
 
-The dependent variable here, namely, the occurrence of the weed (buttercup) are not continuous. In a more visualised way, from the histogram of the frequency of the buttercup, we can see that it does not follow the normal distribution. Therefore it is not suitable to use normal linear regression models. 
+The dependent variable here, namely, the occurrence of the weed (buttercup) are not continuous. In a more visualised way, from the histogram of the frequency of the buttercup shown in the left plot, we can see that it does not follow the normal distribution. Therefore it is not suitable to use normal linear regression models. Here, we would like to investigate the control of the weed by using different treatments. Each test has two potential outcomes: Has Bc or No Bc, and each test is exclusive or independent of one another. As shown in the right plot below, the data follows a discrete distribution. Therefore, binomial distribution should be considered as an appropriate way to fit the model. 
 
 ```{r}
+pardef <- par()
+par(mfrow = c(1,2))
 hist(initobs$Bc)
+plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps * 100, 
+     xlab="Treatment",ylab="% of ground cover of the weed")
 ```
 
-The underlying relationship between the response variable and the predictor variables is not linear here. The graphs above suggest that 
+  
+
+. The graphs above suggest that 
 Because the buttercup after the treatment will either appear or not appear. Therefore, this dataset is following binomial distribution.
 
 
@@ -78,13 +82,13 @@ The plots above show the distribution of the residuals.
 pardef <- par()
 par(mfrow = c(2,2))
 
-plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps, 
+plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps * 100, 
      xlab="Treatment",ylab="% of ground cover of the weed")
-plot(as.factor(initobs$Farm), initobs$Bc/initobs$Steps, 
+plot(as.factor(initobs$Farm), initobs$Bc/initobs$Steps * 100, 
      xlab="Farm", ylab="% of ground cover of the weed")
-plot(as.factor(initobs$Plot), initobs$Bc/initobs$Steps, 
+plot(as.factor(initobs$Plot), initobs$Bc/initobs$Steps * 100, 
      xlab="Plot", ylab="% of ground cover of the weed")
-plot(as.factor(initobs$Observer),initobs$Bc/initobs$Steps, 
+plot(as.factor(initobs$Observer),initobs$Bc/initobs$Steps * 100, 
      xlab="Observer", ylab="% of ground cover of the weed")
 ```
 
