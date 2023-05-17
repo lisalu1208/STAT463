@@ -39,18 +39,13 @@ plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps * 100,
      xlab="Treatment",ylab="% of ground cover of the weed")
 ```
 
-  
-
-. The graphs above suggest that 
-Because the buttercup after the treatment will either appear or not appear. Therefore, this dataset is following binomial distribution.
-
 
 **c) Fit an appropriate random effects model to these data**
 
-```{r}
+```{r, warning=FALSE, message=FALSE}
 library(lme4)
 Trt <- as.factor(initobs$Trt)
-m1 <- glmer(cbind(Bc, NotBc) ~ trt + (1 |Observer) + (1|Farm), 
+m1 <- glmer(cbind(Bc, NotBc) ~ Trt + (1|Observer) + (1|Farm), 
             family = binomial, data = initobs)
 
 summary(m1)
@@ -73,22 +68,15 @@ hist(resid(m1), main = "Histogram of Residuals")
 plot(fitted(m1), resid(m1), xlab = "Fitted", ylab="Residuals")
 abline(0,0)
 ```
-The plots above show the distribution of the residuals. 
+# The plots above show the distribution of the residuals. 
 
 
 ```{r}
 # Create plots of random effects
-
-pardef <- par()
-par(mfrow = c(2,2))
-
-plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps * 100, 
-     xlab="Treatment",ylab="% of ground cover of the weed")
-plot(as.factor(initobs$Farm), initobs$Bc/initobs$Steps * 100, 
-     xlab="Farm", ylab="% of ground cover of the weed")
-plot(as.factor(initobs$Plot), initobs$Bc/initobs$Steps * 100, 
-     xlab="Plot", ylab="% of ground cover of the weed")
-plot(as.factor(initobs$Observer),initobs$Bc/initobs$Steps * 100, 
-     xlab="Observer", ylab="% of ground cover of the weed")
+re1 <- ranef(m1)$Observer
+re2 <- ranef(m1)$Farm
+re <- data.frame(Observer = re1, Farm = re2)
+boxplot(re, col=c("lightblue", "lightpink"), main="Random Effects Boxplot",
+        names=c("Observer","Farm"),ylab="Random Effects")
 ```
 
