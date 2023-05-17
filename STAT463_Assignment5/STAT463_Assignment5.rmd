@@ -30,25 +30,14 @@ plot(as.factor(initobs$Observer),initobs$Bc/initobs$Steps * 100,
 From the left plot above, we can see that the number of occurrence of each observer varies greatly. The right plot also suggested that the distribution of the percentage of ground covered by the weed differs from each observer. Therefore, the observers are the source of random variation, which should be taken into consideration when choosing the model as it brings potential effects on the relationship between the control of the weed and the different treatments. 
 
 **b) What distribution would be appropriate for these data and why?**
+
 The dependent variable here, namely, the occurrence of the weed (buttercup) are not continuous. In a more visualised way, from the histogram of the frequency of the buttercup, we can see that it does not follow the normal distribution. Therefore it is not suitable to use normal linear regression models. 
 
 ```{r}
 hist(initobs$Bc)
-
-pardef <- par()
-par(mfrow = c(2,2))
-
-plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps, 
-     xlab="Treatment",ylab="% of ground cover of the weed")
-plot(as.factor(initobs$Farm), initobs$Bc/initobs$Steps, 
-     xlab="Farm", ylab="% of ground cover of the weed")
-plot(as.factor(initobs$Plot), initobs$Bc/initobs$Steps, 
-     xlab="Plot", ylab="% of ground cover of the weed")
-plot(as.factor(initobs$Observer),initobs$Bc/initobs$Steps, 
-     xlab="Observer", ylab="% of ground cover of the weed")
 ```
 
- The underlying relationship between the response variable and the predictor variables is not linear here. The graphs above suggest that 
+The underlying relationship between the response variable and the predictor variables is not linear here. The graphs above suggest that 
 Because the buttercup after the treatment will either appear or not appear. Therefore, this dataset is following binomial distribution.
 
 
@@ -86,5 +75,16 @@ The plots above show the distribution of the residuals.
 ```{r}
 # Create plots of random effects
 
+pardef <- par()
+par(mfrow = c(2,2))
+
+plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps, 
+     xlab="Treatment",ylab="% of ground cover of the weed")
+plot(as.factor(initobs$Farm), initobs$Bc/initobs$Steps, 
+     xlab="Farm", ylab="% of ground cover of the weed")
+plot(as.factor(initobs$Plot), initobs$Bc/initobs$Steps, 
+     xlab="Plot", ylab="% of ground cover of the weed")
+plot(as.factor(initobs$Observer),initobs$Bc/initobs$Steps, 
+     xlab="Observer", ylab="% of ground cover of the weed")
 ```
 
