@@ -19,11 +19,19 @@ trt <- as.factor(initobs$Trt)
 
 **a) Explain why observer should be included in a model as a random effect.**
 
-The observers are the source of random variation. It is assumed here that these 
-observers are from a random sample selected from a large collection of observers.
+From the left plot below, we can see that the number of occurrence of each observer varies greatly. The right plot also suggested that the distribution of the percentage of ground covered by the weed differs from each observer. Therefore, the observers are the source of random variation, which should be taken into consideration when choosing the model as it brings potential effects on the relationship between the control of the weed and the different treatments. 
+
+```{r}
+pardef <- par()
+par(mfrow = c(1,2))
+plot(as.factor(initobs$Observer), xlab="Observer", ylab="Count")
+plot(as.factor(initobs$Observer),initobs$Bc/initobs$Steps * 100, 
+     xlab="Observer", ylab="% of ground cover of the weed")
+```
 
 **b) What distribution would be appropriate for these data and why?**
 From the histogram of the frequency of the buttercup, we can see that it does not follow the normal distribution. Furthermore, because it is the count data of how frequent the buttercup occurs, therefore, this dataset follows the binomial distribution.
+
 ```{r}
 hist(initobs$Bc)
 
@@ -31,14 +39,15 @@ pardef <- par()
 par(mfrow = c(2,2))
 
 plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps, 
-     xlab="Treatment",ylab="Prob of having Buttercup")
+     xlab="Treatment",ylab="% of ground cover of the weed")
 plot(as.factor(initobs$Farm), initobs$Bc/initobs$Steps, 
-     xlab="Farm", ylab="Prob of having Buttercup")
+     xlab="Farm", ylab="% of ground cover of the weed")
 plot(as.factor(initobs$Plot), initobs$Bc/initobs$Steps, 
-     xlab="Plot", ylab="Prob of having Buttercup")
+     xlab="Plot", ylab="% of ground cover of the weed")
 plot(as.factor(initobs$Observer),initobs$Bc/initobs$Steps, 
-     xlab="Observer", ylab="Prob of having Buttercup")
+     xlab="Observer", ylab="% of ground cover of the weed")
 ```
+
 These data are not continuous, therefore it is not very suitable to use normal linear regression models. The underlying relationship between the response variable and the predictor variables is not linear here. The graphs above suggest that 
 Because the buttercup after the treatment will either appear or not appear. Therefore, this dataset is following binomial distribution.
 
@@ -73,10 +82,9 @@ abline(0,0)
 ```
 The plots above show the distribution of the residuals. 
 
+
 ```{r}
 # Create plots of random effects
-re <- ranef(m1)$Observer
-re
-coef(m1)
+
 ```
 
