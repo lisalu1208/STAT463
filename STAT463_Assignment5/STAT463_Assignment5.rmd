@@ -44,11 +44,11 @@ plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps * 100,
 
 ```{r, warning=FALSE, message=FALSE}
 library(lme4)
-Trt <- as.factor(initobs$Trt)
-m1 <- glmer(cbind(Bc, NotBc) ~ Trt + (1|Observer) + (1|Farm), 
+initobs$Plot <- as.factor(initobs$Plot)
+m1 <- glmer(cbind(Bc, NotBc) ~ Trt + Farm + Plot + (1|Observer), 
             family = binomial, data = initobs)
-
 summary(m1)
+
 ```
 
 
@@ -74,9 +74,11 @@ abline(0,0)
 ```{r}
 # Create plots of random effects
 re1 <- ranef(m1)$Observer
-re2 <- ranef(m1)$Farm
-re <- data.frame(Observer = re1, Farm = re2)
-boxplot(re, col=c("lightblue", "lightpink"), main="Random Effects Boxplot",
-        names=c("Observer","Farm"),ylab="Random Effects")
+# re2 <- ranef(m1)$Farm
+# re <- data.frame(Observer = re1, Farm = re2)
+# boxplot(re, col=c("lightblue", "lightpink"), main="Random Effects Boxplot",
+       # names=c("Observer","Farm"),ylab="Random Effects")
+boxplot(re1, main="Random Effects Boxplot",
+       xlab="Observer",ylab="Random Effects")
 ```
 
