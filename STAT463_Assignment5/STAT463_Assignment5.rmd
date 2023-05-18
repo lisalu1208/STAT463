@@ -56,8 +56,13 @@ model.3 <- glmer(cbind(Bc, NotBc) ~ Trt + Farm + (1|Observer),
 model.4 <- glmer(cbind(Bc, NotBc) ~ Trt + Farm + Plot + (1|Observer), 
             family = binomial, data = initobs)
 anova(model.0, model.1, model.2,model.3, model.4)
+```
+Several models were fitted and compared in this section. From the comparison above, we can see that the model with **Trt**,**Farm**, and **Plot** as the predictor variables, and **Observer** as the random effect has the best fit. 
+
+```{r}
 summary(model.4)
 ```
+
 
 * a. Discuss the results of the analysis, include comments about the following:
   + i). Scaled residuals
@@ -69,10 +74,10 @@ summary(model.4)
 ```{r}
 # Create plots of the residuals
 par(mfrow=c(1,3))
-qqnorm(resid(m1, main = "Residual Plot"))
+qqnorm(resid(model.4, main = "Residual Plot"))
 abline(0,1)
-hist(resid(m1), main = "Histogram of Residuals")
-plot(fitted(m1), resid(m1), xlab = "Fitted", ylab="Residuals")
+hist(resid(model.4), main = "Histogram of Residuals")
+plot(fitted(model.4), resid(model.4), xlab = "Fitted", ylab="Residuals")
 abline(0,0)
 ```
 # The plots above show the distribution of the residuals. 
@@ -80,7 +85,7 @@ abline(0,0)
 
 ```{r}
 # Create plots of random effects
-re1 <- ranef(m1)$Observer
+re1 <- ranef(model.4)$Observer
 # re2 <- ranef(m1)$Farm
 # re <- data.frame(Observer = re1, Farm = re2)
 # boxplot(re, col=c("lightblue", "lightpink"), main="Random Effects Boxplot",
