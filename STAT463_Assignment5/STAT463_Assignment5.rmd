@@ -45,12 +45,19 @@ plot(as.factor(initobs$Trt), initobs$Bc/initobs$Steps * 100,
 ```{r, warning=FALSE, message=FALSE}
 library(lme4)
 initobs$Plot <- as.factor(initobs$Plot)
-m1 <- glmer(cbind(Bc, NotBc) ~ Trt + Farm + Plot + (1|Observer), 
+model.0 <- glmer(cbind(Bc, NotBc) ~ Trt + (1|Observer), 
             family = binomial, data = initobs)
-summary(m1)
-
+model.1 <- glmer(cbind(Bc, NotBc) ~ Trt + (0 + Trt|Observer), 
+            family = binomial, data = initobs)
+model.2<- glmer(cbind(Bc, NotBc) ~ Trt + (1|Observer) + (1|Farm) + (1|Plot), 
+            family = binomial, data = initobs)
+model.3 <- glmer(cbind(Bc, NotBc) ~ Trt + Farm + (1|Observer), 
+            family = binomial, data = initobs)
+model.4 <- glmer(cbind(Bc, NotBc) ~ Trt + Farm + Plot + (1|Observer), 
+            family = binomial, data = initobs)
+anova(model.0, model.1, model.2,model.3, model.4)
+summary(model.4)
 ```
-
 
 * a. Discuss the results of the analysis, include comments about the following:
   + i). Scaled residuals
