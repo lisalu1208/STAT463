@@ -57,40 +57,47 @@ model.4 <- glmer(cbind(Bc, NotBc) ~ Trt + Farm + Plot + (1|Observer),
             family = binomial, data = initobs)
 anova(model.0, model.1, model.2,model.3, model.4)
 ```
-Several models were fitted and compared in this section. From the comparison above, we can see that the model with **Trt**,**Farm**, and **Plot** as the predictor variables, and **Observer** as the random effect has the best fit. 
+Several models were fitted and compared in this section. My first thought was that Farm and Plot could work as the random effects. However, it seemed like taking these two variables as the fixed effect variables fit better models, which indicated that Farm and Plot variables along with the Treatment had a constant effect on the occurrence of the weed. I also tried the random effect models with random slopes and with both random intercepts and slopes. Nevertheless, these did not work out well. From the ANOVA output above, we can see that the model with **Trt**,**Farm**, and **Plot** as the predictor variables, and **Observer** as the random effect has the best fit.
 
 ```{r}
 summary(model.4)
 ```
 
-
 * a. Discuss the results of the analysis, include comments about the following:
   + i). Scaled residuals
+  As we can see from the scaled residuals summary above, the median is closer to the 3rd Quartile, which means the distribution of the residuals is bit left-skewed. 
+  
   + ii). Random effects
+  
+  This section shows how much of the variation in having Bc is explained by the Observer variable, which in this case is 0.045. Because it is quite close to zero, it suggests a relatively small impact the Observer random effect has on explaining the variability of whether there is weed. 
+  
   + iii). Fixed effects
+  
+  When fitting the model, the predictor variables were considered as factors. From the section of the fixed effects above, we can see that the Trt4, TrtControl, and Plot4 have the relatively more significant effects on the response, following by Plot2, and then FarmR. If we look closely at the estimated coefficients, except the FarmR, all the variables have the positive efficients, which means it is more likely to have the weed when the treatment is 4 or control, or when the plot is 2 or 4. However, the coefficient of FarmR is negative, which indicates on FarmR, it is less likely to have the weed. 
+  
+  
 * b. What would your overall conclusion be?
 
+  In conclusion, it seems like with no treatment or with too many treatments both will not bring positive effect on preventing the weed from occurring. Also, there are differences among the farms and the plots on each farm. The random effects of observer does not have much significant impact on the occurrence of the weed. 
+  
 **d) Draw graphs of the residuals and the random effects and comment on these.**
 ```{r}
 # Create plots of the residuals
 par(mfrow=c(1,3))
 qqnorm(resid(model.4, main = "Residual Plot"))
 abline(0,1)
-hist(resid(model.4), main = "Histogram of Residuals")
 plot(fitted(model.4), resid(model.4), xlab = "Fitted", ylab="Residuals")
 abline(0,0)
+hist(resid(model.4), main = "Histogram of Residuals")
 ```
-# The plots above show the distribution of the residuals. 
 
+The above three plots show the distribution of the residuals of the model. The Q-Q plot (the first plot) and the residual plot (the second plot) seem like there is no specific pattern in the distribution, but there are a few obvious outliers. From the last plot, namely the histogram of the residuals, we can clearly see that the distribution may be "heavy tailed". 
 
 ```{r}
-# Create plots of random effects
+# Create plot of random effects
 re1 <- ranef(model.4)$Observer
-# re2 <- ranef(m1)$Farm
-# re <- data.frame(Observer = re1, Farm = re2)
-# boxplot(re, col=c("lightblue", "lightpink"), main="Random Effects Boxplot",
-       # names=c("Observer","Farm"),ylab="Random Effects")
 boxplot(re1, main="Random Effects Boxplot",
        xlab="Observer",ylab="Random Effects")
 ```
 
+This boxplot suggests that the distribution of the random effects is heavily left-skewed and there is one outlier. This can be caused by the imbalanced occurrences of the observers. For example, from the two plots shown in question a), it is shown that Ja and Sa had the least occurrence, however, the proportion of the ground covered by the weed they reported was quite high in average. Because these two groups had higher values, this could cause the skewness of the random effects. 
