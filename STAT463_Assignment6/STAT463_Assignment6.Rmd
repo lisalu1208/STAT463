@@ -21,3 +21,8 @@ ECAN93$Date <- as.Date(ECAN93$Date, "%d/%m/%Y")
 
 
 # QUESTION 2 Multiple Comparisons
+(a) Carry out an analysis of variance on the data with Herbicide as the explanatory variable and Grass_percent" as the response.
+(b) Discuss the residuals
+(c) Carry out an LSD type analysis comparing all possible pairs of treatments. Note which pairs have a significant difference.
+(d) Carry out pairwise comparisons using Bonferroni, Tukey and Dunnett adjustments and in each case show the pairs with significant differences.
+(e) How do the conclusions in (c) and (d) differ?
