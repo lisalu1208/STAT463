@@ -1,0 +1,23 @@
+---
+title: "Assignment 6 STAT 315-463: Multivariable Statistical Methods and Applications"
+author: "Lisa Lu 31088272"
+date: "2023-05-27"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# QUESTION 1 Generalised additive models
+
+```{r}
+# Read in the datasets and convert the string "Date" into Date datatype variables
+CCC05 <- read.table("CCC05.csv", header = TRUE, sep = ',', na.strings = "na")
+CCC05$Date <- as.Date(CCC05$Date, "%d/%m/%Y")
+ECAN93 <- read.table("ECAN93.csv", header = TRUE, sep = ',', na.strings = "na")
+ECAN93$Date <- as.Date(ECAN93$Date, "%d/%m/%Y")
+```
+
+
+# QUESTION 2 Multiple Comparisons
