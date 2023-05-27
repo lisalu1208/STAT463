@@ -19,6 +19,11 @@ ECAN93 <- read.table("ECAN93.csv", header = TRUE, sep = ',', na.strings = "na")
 ECAN93$Date <- as.Date(ECAN93$Date, "%d/%m/%Y")
 ```
 
+```{r}
+library(gam)
+library(ggplot2)
+```
+
 
 # QUESTION 2 Multiple Comparisons
 (a) Carry out an analysis of variance on the data with Herbicide as the explanatory variable and Grass_percent" as the response.

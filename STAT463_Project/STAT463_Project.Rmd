@@ -8,3 +8,8 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r}
+dataset <- read.table("Sleep_health_and_lifestyle_dataset.csv", 
+                      header = TRUE, sep = ',', na.strings = "na")
+```
+
