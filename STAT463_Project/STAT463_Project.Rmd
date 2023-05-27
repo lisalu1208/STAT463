@@ -1,0 +1,10 @@
+---
+title: "STAT463_Project"
+author: "Lisa Lu 31088272"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
