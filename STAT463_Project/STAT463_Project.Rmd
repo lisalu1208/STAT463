@@ -55,11 +55,20 @@ biplot(pca)
 
 # Explore the causes of sleep disorder
 ```{r}
-# Multinomial Logistic Regression
+# Multinomial Logistic Regression: predict the probablities of categorically dependent variable
 library(nnet)
 mlr <- multinom(Sleep.Disorder ~ Age + Gender + Occupation + Stress.Level + Physical.Activity.Level, data = sleep)
 summary(mlr)
 exp(summary(mlr)$coefficients)
 step(mlr, direction = 'backward')
+```
+
+# Generalised Linear Mixed Model
+```{r}
+library(lme4)
+m1 <- lmer(Quality.of.Sleep ~ Sleep.Duration + Stress.Level + (1|Occupation), data = sleep)
+summary(m1)
+m2 <- lmer(Quality.of.Sleep ~ Stress.Level + (1|Occupation), data=sleep)
+summary(m2)
 ```
 
