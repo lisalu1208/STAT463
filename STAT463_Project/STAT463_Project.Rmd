@@ -1,5 +1,5 @@
 ---
-title: "STAT463_Project"
+title: "STAT463 Project: Sleep Health and Lifestyle"
 author: "Lisa Lu 31088272"
 output: pdf_document
 ---
@@ -8,11 +8,28 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+```{r, warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(stringr)
+```
+
+
 ```{r}
 dataset <- read.table("Sleep_health_and_lifestyle_dataset.csv", 
                       header = TRUE, sep = ',', na.strings = "na")
 
+# Split Blood Pressure column into systolic and diastolic pressure
+dataset[c('Systolic.Pressure', 'Diastolic.Pressure')] <- as.numeric(str_split_fixed(dataset$Blood.Pressure, '/', 2))
+
+sleep <- dataset[, -10]
+
+
 summary(dataset)
- 
+# Frequency chart
+dataset %>% 
+  ggplot(aes(x = Stress.Level)) +
+  geom_bar() +
+  labs(y = "Frequency", x = "Stress Level") 
 ```
 
