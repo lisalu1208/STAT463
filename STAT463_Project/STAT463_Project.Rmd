@@ -24,7 +24,6 @@ dataset[c('Systolic.Pressure', 'Diastolic.Pressure')] <- as.numeric(str_split_fi
 
 sleep <- dataset[, -10]
 
-
 summary(dataset)
 # Frequency chart
 dataset %>% 
@@ -33,3 +32,23 @@ dataset %>%
   labs(y = "Frequency", x = "Stress Level") 
 ```
 
+
+# Explore the factors affecting quality of sleep
+```{r}
+# Use linear regression model
+lr <- lm(Quality.of.Sleep ~ Stress.Level + Heart.Rate + Systolic.Pressure + Diastolic.Pressure, data = sleep)
+summary(lr)
+plot(lr)
+
+# Use PCA analysis
+# Standardise the Quality of sleep and stress level
+Quality.of.Sleep <- data.frame(scale(sleep$Quality.of.Sleep))
+Stress.Level <- data.frame(scale(sleep$Stress.Level))
+
+pca_dataset <- select(sleep, Stress.Level, Heart.Rate, Daily.Steps, Systolic.Pressure, Diastolic.Pressure)
+pca <- prcomp(scale(pca_dataset))
+summary(pca)
+```
+
+
+# Explore the causes of sleep disorder
