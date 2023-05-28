@@ -45,10 +45,21 @@ plot(lr)
 Quality.of.Sleep <- data.frame(scale(sleep$Quality.of.Sleep))
 Stress.Level <- data.frame(scale(sleep$Stress.Level))
 
-pca_dataset <- select(sleep, Stress.Level, Heart.Rate, Daily.Steps, Systolic.Pressure, Diastolic.Pressure)
+pca_dataset <- select(sleep, Age, Stress.Level, Sleep.Duration, Heart.Rate, Daily.Steps, Systolic.Pressure, Diastolic.Pressure)
 pca <- prcomp(scale(pca_dataset))
+screeplot(pca)
 summary(pca)
+pca$rotation
+biplot(pca)
 ```
 
-
 # Explore the causes of sleep disorder
+```{r}
+# Multinomial Logistic Regression
+library(nnet)
+mlr <- multinom(Sleep.Disorder ~ Age + Gender + Occupation + Stress.Level + Physical.Activity.Level, data = sleep)
+summary(mlr)
+exp(summary(mlr)$coefficients)
+step(mlr, direction = 'backward')
+```
+
