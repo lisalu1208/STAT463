@@ -27,9 +27,9 @@ sleep <- dataset[, -10]
 summary(dataset)
 # Frequency chart
 dataset %>% 
-  ggplot(aes(x = Stress.Level)) +
+  ggplot(aes(x = Occupation)) +
   geom_bar() +
-  labs(y = "Frequency", x = "Stress Level") 
+  labs(y = "Frequency", x = "Occupation") 
 ```
 
 
@@ -40,12 +40,18 @@ lr <- lm(Quality.of.Sleep ~ Stress.Level + Heart.Rate + Systolic.Pressure + Dias
 summary(lr)
 plot(lr)
 
+lr1 <- lm(Quality.of.Sleep ~ Age + Stress.Level + Occupation, data = sleep)
+summary(lr1)
+
+lr2 <- lm(Quality.of.Sleep ~ Age + Gender + Occupation + Sleep.Duration + Physical.Activity.Level + Stress.Level + Heart.Rate + Daily.Steps + Systolic.Pressure + Diastolic.Pressure, data = sleep)
+summary(lr2)
 # Use PCA analysis
 # Standardise the Quality of sleep and stress level
 Quality.of.Sleep <- data.frame(scale(sleep$Quality.of.Sleep))
 Stress.Level <- data.frame(scale(sleep$Stress.Level))
+Physical.Level <-data.frame(scale(sleep$Physical.Activity.Level))
 
-pca_dataset <- select(sleep, Age, Stress.Level, Sleep.Duration, Heart.Rate, Daily.Steps, Systolic.Pressure, Diastolic.Pressure)
+pca_dataset <- select(sleep, Age, Physical.Activity.Level, Stress.Level, Sleep.Duration, Heart.Rate, Daily.Steps, Systolic.Pressure, Diastolic.Pressure)
 pca <- prcomp(scale(pca_dataset))
 screeplot(pca)
 summary(pca)
@@ -53,14 +59,23 @@ pca$rotation
 biplot(pca)
 ```
 
+```{r}
+step.model <- step(lr2, direction = "backward")
+summary(step.model)
+
+```
+
+
 # Explore the causes of sleep disorder
 ```{r}
 # Multinomial Logistic Regression: predict the probablities of categorically dependent variable
 library(nnet)
-mlr <- multinom(Sleep.Disorder ~ Age + Gender + Occupation + Stress.Level + Physical.Activity.Level, data = sleep)
+mlr <- multinom(Sleep.Disorder ~ Gender + Occupation + Stress.Level + Physical.Activity.Level, data = sleep)
 summary(mlr)
 exp(summary(mlr)$coefficients)
 step(mlr, direction = 'backward')
+
+lm1 <- 
 ```
 
 # Generalised Linear Mixed Model
@@ -68,7 +83,7 @@ step(mlr, direction = 'backward')
 library(lme4)
 m1 <- lmer(Quality.of.Sleep ~ Sleep.Duration + Stress.Level + (1|Occupation), data = sleep)
 summary(m1)
-m2 <- lmer(Quality.of.Sleep ~ Stress.Level + (1|Occupation), data=sleep)
+m2 <- lmer(Quality.of.Sleep ~ Sleep.Duration + (1|Occupation), data=sleep)
 summary(m2)
 ```
 
