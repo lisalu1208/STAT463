@@ -35,7 +35,7 @@ ggplot(data = CCC05, aes(x = Date, y = Value)) +
   geom_point() +
   geom_line(aes(x=Date, y=pred), colour = "red")
 
-ECAN93.gam <- gam(Value~s(Date), data = ECAN93)
+ECAN93.gam <- gam(Value ~ s(Date), data = ECAN93)
 pred1 <- predict(ECAN93.gam)
 ```
 b) Use at least 4 different spar parameters and discuss which seems to best describe the data series
