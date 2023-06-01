@@ -34,7 +34,7 @@ summary(dataset)
 dataset[c('Systolic.Pressure', 'Diastolic.Pressure')] <- as.numeric(str_split_fixed(dataset$Blood.Pressure, '/', 2))
 
 # Combine "Normal" and "Normal Weight" values in BMI.Category
-categorical.data$BMI.Category[categorical.data$BMI.Category == "Normal Weight"] <- "Normal"
+dataset$BMI.Category[dataset$BMI.Category == "Normal Weight"] <- "Normal"
 
 # Convert stress level as factors
 # categorical.data$Stress.Level <- as.factor(dataset$Stress.Level)
@@ -60,9 +60,9 @@ dataset %>%
   labs(y = "Frequency", x = "Age")
 
 dataset %>% 
-  ggplot(aes(x = Occupation)) +
+  ggplot(aes(y = Occupation)) +
   geom_bar() +
-  labs(y = "Frequency", x = "Occupation")
+  labs(y = "Occupation", x = "Frequency")
 
 dataset %>% 
   ggplot(aes(x = Sleep.Duration)) +
@@ -123,28 +123,21 @@ dataset %>%
 # Use linear regression model
 sleep <- dataset[, -c(1, 10)]
 # Get the full multiple linear regression model
-lr_full <- lm(Quality.of.Sleep ~ Age + Gender + Occupation + Sleep.Duration + Physical.Activity.Level + Stress.Level + Heart.Rate + Daily.Steps + Systolic.Pressure + Diastolic.Pressure + BMI.Category, data = sleep)
+lr_full <- lm(Quality.of.Sleep ~ Age + Gender + Occupation + Sleep.Duration + Physical.Activity.Level + Stress.Level + Heart.Rate + Daily.Steps + Systolic.Pressure + Diastolic.Pressure + BMI.Category, data = dataset)
 
 summary(lr_full)
 
 plot(lr_full)
+lr_backward <- step(lr_full, direction = "backward")
+summary(lr_backward)
 
-
-lr <- lm(Quality.of.Sleep ~ Stress.Level + Heart.Rate + Systolic.Pressure + Diastolic.Pressure, data = sleep)
-summary(lr)
-plot(lr)
-
-lr1 <- lm(Quality.of.Sleep ~ Age + Stress.Level + Occupation, data = sleep)
-summary(lr1)
-
-
-# Use PCA analysis
+ # Use PCA analysis
 # Standardise the Quality of sleep and stress level
-Quality.of.Sleep <- data.frame(scale(sleep$Quality.of.Sleep))
-Stress.Level <- data.frame(scale(sleep$Stress.Level))
-Physical.Level <-data.frame(scale(sleep$Physical.Activity.Level))
+Quality.of.Sleep <- data.frame(scale(dataset$Quality.of.Sleep))
+Stress.Level <- data.frame(scale(dataset$Stress.Level))
+Physical.Level <-data.frame(scale(dataset$Physical.Activity.Level))
 
-pca_dataset <- select(sleep, Age, Physical.Activity.Level, Stress.Level, Sleep.Duration, Heart.Rate, Daily.Steps, Systolic.Pressure, Diastolic.Pressure)
+pca_dataset <- select(dataset, Age, Physical.Activity.Level, Stress.Level, Sleep.Duration, Heart.Rate, Daily.Steps, Systolic.Pressure, Diastolic.Pressure)
 pca <- prcomp(scale(pca_dataset))
 screeplot(pca)
 summary(pca)
@@ -153,9 +146,8 @@ biplot(pca)
 ```
 
 ```{r}
-step.model <- step(lr2, direction = "backward")
+step.model <- step(lr_full, direction = "backward")
 summary(step.model)
-
 ```
 
 
@@ -168,7 +160,6 @@ summary(mlr)
 exp(summary(mlr)$coefficients)
 step(mlr, direction = 'backward')
 
-lm1 <- 
 ```
 
 # Generalised Linear Mixed Model
