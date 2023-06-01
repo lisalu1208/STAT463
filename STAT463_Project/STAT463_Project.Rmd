@@ -8,10 +8,13 @@ output: pdf_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
 ```{r, warning=FALSE, message=FALSE}
+# Import libraries
 library(dplyr)
 library(ggplot2)
 library(stringr)
+library(gridExtra)
 ```
 
 # Data Exploration
@@ -44,75 +47,53 @@ dataset$BMI.Category[dataset$BMI.Category == "Normal Weight"] <- "Normal"
 categorical.data <- dataset[,c("Gender","Occupation", "BMI.Category", "Sleep.Disorder" )]
 numeric.data <- dataset[,c(3,5,6,7,8,11,12,14,15)]
 
-# Plot the data -- Histogram
+# Plot the data -- Boxplot for numeric data and Histogram for categorical data
+# Boxplots
 
+par(mfrow=c(2,5))
+for (i in 1:length(numeric.data)) {
+        boxplot(numeric.data[,i], main=names(numeric.data[i]), type="l")
+
+    }
+```
+
+```{r}
 # Frequency chart
-par(mfrow = c(4,3))
+gender <- ggplot(data = dataset, aes(x = Gender)) +
+geom_bar() +
+labs(y = "Frequency", x = "Gender")
 
-dataset %>% 
-  ggplot(aes(x = Gender)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "Gender")
+occupation <- ggplot(data = dataset, aes(y = Occupation)) +
+geom_bar() +
+labs(y = "Occupation", x = "Frequency")
 
-dataset %>% 
-  ggplot(aes(x = Age)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "Age")
+bmi <- ggplot(data = dataset, aes(x = BMI.Category)) +
+geom_bar() +
+labs(y = "Frequency", x = "BMI Category")
 
-dataset %>% 
-  ggplot(aes(y = Occupation)) +
-  geom_bar() +
-  labs(y = "Occupation", x = "Frequency")
+sleep_disorder <- ggplot(data = dataset, aes(x = Sleep.Disorder)) +
+geom_bar() +
+labs(y = "Frequency", x = "Sleep Disorder")
 
-dataset %>% 
-  ggplot(aes(x = Sleep.Duration)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "Sleep Duration")
+grid.arrange(gender,occupation, bmi, sleep_disorder, ncol = 2, nrow = 2)
+```
 
-dataset %>% 
-  ggplot(aes(x = Quality.of.Sleep)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "Quality of Sleep")
 
-dataset %>% 
-  ggplot(aes(x = Physical.Activity.Level)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "Physical Activity Level")
+```{r}
 
-dataset %>% 
-  ggplot(aes(x = Stress.Level)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "Stress Level")
 
-dataset %>% 
-  ggplot(aes(x = BMI.Category)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "BMI Category")
 
-dataset %>% 
-  ggplot(aes(x = Heart.Rate)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "Heart Rate")
 
-dataset %>% 
-  ggplot(aes(x = Daily.Steps)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "Daily Steps")
 
-dataset %>% 
-  ggplot(aes(x = Sleep.Disorder)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "Sleep Disorder")
 
-dataset %>% 
-  ggplot(aes(x =Systolic.Pressure)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "Systolic Pressure")
 
-dataset %>% 
-  ggplot(aes(x = Diastolic.Pressure)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "Diastolic Pressure")
+systolic <- ggplot(data = dataset, aes(x =Systolic.Pressure)) +
+geom_bar() +
+labs(y = "Frequency", x = "Systolic Pressure")
+
+diastolic <- ggplot(data = dataset, aes(x = Diastolic.Pressure)) +
+geom_bar() +
+labs(y = "Frequency", x = "Diastolic Pressure")
 
 
 ```
