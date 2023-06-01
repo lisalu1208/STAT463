@@ -14,22 +14,66 @@ library(ggplot2)
 library(stringr)
 ```
 
-
+# Data Exploration
 ```{r}
+# Read in dataset
 dataset <- read.table("Sleep_health_and_lifestyle_dataset.csv", 
                       header = TRUE, sep = ',', na.strings = "na")
 
-# Split Blood Pressure column into systolic and diastolic pressure
-dataset[c('Systolic.Pressure', 'Diastolic.Pressure')] <- as.numeric(str_split_fixed(dataset$Blood.Pressure, '/', 2))
+# Print the first few rows of data frame
+head(dataset)
 
-sleep <- dataset[, -10]
+# Explore the structure of the dataset
+str(dataset)
 
+# Get a descriptive statistics
 summary(dataset)
+
+# Separate categorical and numeric data
+categorical.data <- dataset[,c("Gender","Occupation", "BMI.Category", "Sleep.Disorder")]
+numeric.data <- dataset[,c(3,5,6,7,8,11,12,14,15)]
+
+
+# Plot the data
+# Categorical data: Histogram
+# 
+
 # Frequency chart
+par(mfrow = c(2,2))
+dataset %>% 
+  ggplot(aes(x = Gender)) +
+  geom_bar() +
+  labs(y = "Frequency", x = "Gender")
+
 dataset %>% 
   ggplot(aes(x = Occupation)) +
   geom_bar() +
-  labs(y = "Frequency", x = "Occupation") 
+  labs(y = "Frequency", x = "Occupation")
+
+dataset %>% 
+  ggplot(aes(x = BMI.Category)) +
+  geom_bar() +
+  labs(y = "Frequency", x = "BMI Category")
+
+dataset %>% 
+  ggplot(aes(x = Sleep.Disorder)) +
+  geom_bar() +
+  labs(y = "Frequency", x = "Sleep Disorder")
+
+sleep <- dataset[, -c(10)]
+
+
+
+
+```
+# Data preprocessing
+```{r}
+# Split Blood Pressure column into systolic and diastolic pressure as numeric data
+dataset[c('Systolic.Pressure', 'Diastolic.Pressure')] <- as.numeric(str_split_fixed(dataset$Blood.Pressure, '/', 2))
+
+# Combine "Normal" and "Normal Weight" values in BMI.Category
+dataset$BMI.Category[dataset$BMI.Category == "Normal Weight"] <- "Normal"
+
 ```
 
 
