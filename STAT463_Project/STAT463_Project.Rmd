@@ -44,14 +44,20 @@ categorical.data$BMI.Category[categorical.data$BMI.Category == "Normal Weight"] 
 categorical.data <- dataset[,c("Gender","Occupation", "BMI.Category", "Sleep.Disorder" )]
 numeric.data <- dataset[,c(3,5,6,7,8,11,12,14,15)]
 
-# Plot the data -- Categorical data: Histogram
+# Plot the data -- Histogram
 
 # Frequency chart
-par(mfrow = c(3,2))
+par(mfrow = c(4,3))
+
 dataset %>% 
   ggplot(aes(x = Gender)) +
   geom_bar() +
   labs(y = "Frequency", x = "Gender")
+
+dataset %>% 
+  ggplot(aes(x = Age)) +
+  geom_bar() +
+  labs(y = "Frequency", x = "Age")
 
 dataset %>% 
   ggplot(aes(x = Occupation)) +
@@ -59,14 +65,9 @@ dataset %>%
   labs(y = "Frequency", x = "Occupation")
 
 dataset %>% 
-  ggplot(aes(x = BMI.Category)) +
+  ggplot(aes(x = Sleep.Duration)) +
   geom_bar() +
-  labs(y = "Frequency", x = "BMI Category")
-
-dataset %>% 
-  ggplot(aes(x = Sleep.Disorder)) +
-  geom_bar() +
-  labs(y = "Frequency", x = "Sleep Disorder")
+  labs(y = "Frequency", x = "Sleep Duration")
 
 dataset %>% 
   ggplot(aes(x = Quality.of.Sleep)) +
@@ -74,15 +75,44 @@ dataset %>%
   labs(y = "Frequency", x = "Quality of Sleep")
 
 dataset %>% 
+  ggplot(aes(x = Physical.Activity.Level)) +
+  geom_bar() +
+  labs(y = "Frequency", x = "Physical Activity Level")
+
+dataset %>% 
   ggplot(aes(x = Stress.Level)) +
   geom_bar() +
   labs(y = "Frequency", x = "Stress Level")
 
+dataset %>% 
+  ggplot(aes(x = BMI.Category)) +
+  geom_bar() +
+  labs(y = "Frequency", x = "BMI Category")
 
-# Plot the data -- Numeric data: Plot
-plot(numeric.data)
-plot(Quality.of.Sleep ~ Age, data = numeric.data)
+dataset %>% 
+  ggplot(aes(x = Heart.Rate)) +
+  geom_bar() +
+  labs(y = "Frequency", x = "Heart Rate")
 
+dataset %>% 
+  ggplot(aes(x = Daily.Steps)) +
+  geom_bar() +
+  labs(y = "Frequency", x = "Daily Steps")
+
+dataset %>% 
+  ggplot(aes(x = Sleep.Disorder)) +
+  geom_bar() +
+  labs(y = "Frequency", x = "Sleep Disorder")
+
+dataset %>% 
+  ggplot(aes(x =Systolic.Pressure)) +
+  geom_bar() +
+  labs(y = "Frequency", x = "Systolic Pressure")
+
+dataset %>% 
+  ggplot(aes(x = Diastolic.Pressure)) +
+  geom_bar() +
+  labs(y = "Frequency", x = "Diastolic Pressure")
 
 
 ```
