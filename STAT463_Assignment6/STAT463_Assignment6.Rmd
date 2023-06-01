@@ -11,6 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # QUESTION 1 Generalised additive models
 
+a) Import the data to R and fit a series of GAMs to the Value using a smoother on Date.
 ```{r}
 # Read in the datasets and convert the string "Date" into Date datatype variables
 CCC05 <- read.table("CCC05.csv", header = TRUE, sep = ',', na.strings = "na")
@@ -19,14 +20,25 @@ ECAN93 <- read.table("ECAN93.csv", header = TRUE, sep = ',', na.strings = "na")
 ECAN93$Date <- as.Date(ECAN93$Date, "%d/%m/%Y")
 ```
 
-```{r}
+
+```{r, message=FALSE, warning=FALSE}
 library(gam)
 library(ggplot2)
+library(mgcv)
 
-# Fit a series of GAMs to the Value using a smoother on Date
-CCC05.gam <- gam(Value ~ Indicator_simple + s(Date), data = CCC05)
+
+# Start with the simple one variable model
+CCC05.gam <- gam(Value ~ s(Date), data = CCC05)
+pred <- predict(CCC05.gam)
+
+ggplot(data = CCC05, aes(x = Date, y = Value)) +
+  geom_point() +
+  geom_line(aes(x=Date, y=pred), colour = "red")
+
+ECAN93.gam <- gam(Value~s(Date), data = ECAN93)
+pred1 <- predict(ECAN93.gam)
 ```
-
+b) Use at least 4 different spar parameters and discuss which seems to best describe the data series
 
 # QUESTION 2 Multiple Comparisons
 (a) Carry out an analysis of variance on the data with Herbicide as the explanatory variable and Grass_percent" as the response.
