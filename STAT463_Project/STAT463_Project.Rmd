@@ -79,26 +79,6 @@ grid.arrange(gender,occupation, bmi, sleep_disorder, ncol = 2, nrow = 2)
 ```
 
 
-```{r}
-
-
-
-
-
-
-
-systolic <- ggplot(data = dataset, aes(x =Systolic.Pressure)) +
-geom_bar() +
-labs(y = "Frequency", x = "Systolic Pressure")
-
-diastolic <- ggplot(data = dataset, aes(x = Diastolic.Pressure)) +
-geom_bar() +
-labs(y = "Frequency", x = "Diastolic Pressure")
-
-
-```
-
-
 # Explore the factors affecting quality of sleep
 ```{r}
 # Use linear regression model
