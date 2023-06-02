@@ -104,25 +104,21 @@ plot(lr_full)
 cor(numeric.data, numeric.data$Quality.of.Sleep)
 ```
 
+
 ```{r}
 library(lme4)
-m1 <- lmer(Quality.of.Sleep ~ Sleep.Duration + Stress.Level + (1|Occupation), data = sleep)
-summary(m1)
-plot(m1)
-m2 <- lmer(Quality.of.Sleep ~ Sleep.Duration + (1|Occupation), data=sleep)
-summary(m2)
-
-lr2 <- glm(Quality.of.Sleep ~ Sleep.Duration, data = sleep)
-summary(lr2)
-plot(lr2)
-```
-
-```{r}
-# Mixed Linear Model
-model <- lmer(Quality.of.Sleep ~   (0 + Stress.Level|Occupation) , data = sleep)
-model1 <- lmer(Quality.of.Sleep ~ Sleep.Duration + Stress.Level + (1|Occupation), data = sleep)
+# Mixed Linear Model, but the results were still not ideal
+model <- lmer(Quality.of.Sleep ~  Sleep.Duration + (1|Occupation) , data = sleep)
 summary(model)
+model1 <- lmer(Quality.of.Sleep ~ Sleep.Duration + Stress.Level + (1|Occupation), data = sleep)
 summary(model1)
 plot(model1)
+```
+```{r}
+# Ordered Logistic Regression
+olr <- MASS::polr(as.factor(Quality.of.Sleep) ~ Stress.Level + Sleep.Duration,
+                     data = dataset, Hess = TRUE) 
+summary(olr)
+
 ```
 
