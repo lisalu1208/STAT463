@@ -85,6 +85,7 @@ qqnorm(residuals(CCC05.gam3))
 plot(pred4, residuals(CCC05.gam4))
 qqnorm(residuals(CCC05.gam4))
 ```
+From the summaries and the plots above, we can see that 
 
 ```{r}
 ECAN93 <- read.table("ECAN93.csv", header = TRUE, sep = ',', na.strings = "na")
@@ -142,7 +143,7 @@ herbicides <- read.xlsx("herbicides.xlsx", sheetIndex = 1)
 
 
 (a) Carry out an analysis of variance on the data with Herbicide as the explanatory variable and Grass_percent" as the response.
-```{r, warning=False, message=FALSE}
+```{r, warning=FALSE, message=FALSE}
 library(multcomp)
 
 Herbicides.aov <- aov(Grass_percent ~ Herbicide, herbicides)
@@ -150,6 +151,44 @@ summary(Herbicides.aov)
 ```
 
 (b) Discuss the residuals
+```{r}
+# Residual distribution
+par(mfrow = c(2, 2))
+hist(Herbicides.aov$residuals)
+qqnorm(Herbicides.aov$residuals)
+plot(fitted(Herbicides.aov), residuals(Herbicides.aov))
+abline(0,0)
+```
+From the histogram of residuals, we can see that it is pretty close to be normally distributed. The Q-Q plot also suggests that as there is no obvious skewness or tailed part. The points in the residual-fitted plot also are evenly distributed around 0 without any patterns. 
+
 (c) Carry out an LSD type analysis comparing all possible pairs of treatments. Note which pairs have a significant difference.
+
+```{r}
+library(agricolae)
+pairwise.t.test(herbicides$Grass_percent, herbicides$Herbicide, p.adj = "none")
+mse <- sum(Herbicides.aov$residuals * Herbicides.aov$residuals)/Herbicides.aov$df.residual
+LSD.test(herbicides$Grass_percent, herbicides$Herbicide, Herbicides.aov$df.residual, 
+         mse, console = TRUE)
+```
+The LSD value obtained here is 7.14. From the result above, we can see that there is no significant difference between Aminopyralid and Aminopyralid + triclopyr, MCPA and Flumetsulam, Chlorsulfuron, MCPB+bentazone and Nil.
+
 (d) Carry out pairwise comparisons using Bonferroni, Tukey and Dunnett adjustments and in each case show the pairs with significant differences.
-(e) How do the conclusions in (c) and (d) differ?
+
+```{r}
+# Bonferroni adjustment
+pairwise.t.test(herbicides$Grass_percent, herbicides$Herbicide, p.adj = "bonferroni",
+                console = TRUE)
+
+# Tukey adjustment
+HerbicidesHSD <- TukeyHSD(aov(Grass_percent ~ Herbicide, herbicides))
+plot(HerbicidesHSD)
+summary(HerbicidesHSD)
+
+# Dunnett adjustment
+herbicides$HerbicideA <- as.factor(herbicides$Herbicide)
+tdaov <- aov(Grass_percent~HerbicideA, data = herbicides)
+test.dunnett = glht(tdaov, linfct = mcp(HerbicideA="Dunnett"))
+confint(test.dunnett)
+```
+
+
