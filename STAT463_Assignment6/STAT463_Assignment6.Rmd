@@ -30,53 +30,61 @@ CCC05 <- transform(CCC05, ndate = as.numeric(Date),
                    nmonth = as.numeric(format(Date, '%m')),
                    nday = as.numeric(format(Date, '%j')))
 
-# Start with the default model and 6 more with different spar parameters
+# Start with the default model and 4 more with different spar parameters
 
 CCC05.gam <- gam(Value ~ s(nyear) + s(nmonth) +s(nday), data = CCC05 )
 pred_default <- predict(CCC05.gam)
+summary(CCC05.gam)
 
-CCC05.gam1 <- gam(Value ~ s(nyear, sp=0.5) + s(nmonth, sp = 0.5) +
-                    s(nday, sp = 0.5), data = CCC05)
-pred1 <- predict(CCC05.gam1)
-
-CCC05.gam2 <- gam(Value ~ s(nyear, sp=1.0) + s(nmonth, sp = 1.0) +
+CCC05.gam1 <- gam(Value ~ s(nyear, sp=1.0) + s(nmonth, sp = 1.0) +
                     s(nday, sp = 1.0), data = CCC05)
-pred2 <- predict(CCC05.gam2)
+pred1 <- predict(CCC05.gam1)
+summary(CCC05.gam1)
 
-CCC05.gam3 <- gam(Value ~ s(nyear, sp=0.01) + s(nmonth, sp = 0.01) +
+CCC05.gam2 <- gam(Value ~ s(nyear, sp=0.01) + s(nmonth, sp = 0.01) +
                     s(nday, sp = 0.01), data = CCC05)
+pred2 <- predict(CCC05.gam2)
+summary(CCC05.gam2)
+
+CCC05.gam3 <- gam(Value ~ s(nyear, sp=0.25) + s(nmonth, sp = 0.25) +
+                    s(nday, sp = 0.25), data = CCC05)
 pred3 <- predict(CCC05.gam3)
+summary(CCC05.gam3)
 
 CCC05.gam4 <- gam(Value ~ s(nyear, sp=0.75) + s(nmonth, sp = 0.75) +
                     s(nday, sp = 0.75), data = CCC05)
 pred4 <- predict(CCC05.gam4)
+summary(CCC05.gam4)
 
-CCC05.gam5 <- gam(Value ~ s(nyear, sp=0.25) + s(nmonth, sp = 0.25) +
-                    s(nday, sp = 0.25), data = CCC05)
-pred5 <- predict(CCC05.gam5)
-
-CCC05.gam6 <- gam(Value ~ s(nyear, sp=0.4) + s(nmonth, sp = 0.4) +
-                    s(nday, sp = 0.4), data = CCC05)
-pred6 <- predict(CCC05.gam6)
 ggplot(data = CCC05, aes(x = Date, y = Value)) +
   geom_point() +
   geom_line(aes(x=Date, y=pred_default), colour = "red") +
   geom_line(aes(x=Date, y=pred1), colour = "orange") +
   geom_line(aes(x=Date, y=pred2), colour = "yellow") +
   geom_line(aes(x=Date, y=pred3), colour = "green") +
-  geom_line(aes(x=Date, y=pred4), colour = "blue") +
-  geom_line(aes(x=Date, y=pred5), colour = "purple") +
-  geom_line(aes(x=Date, y=pred6), colour = "pink")
-
+  geom_line(aes(x=Date, y=pred4), colour = "blue")
 ```
 ```{r}
-summary(fitted.values(CCC05.gam))
-summary(fitted.values(CCC05.gam1))
-fitted.values(CCC05.gam2)
-fitted.values(CCC05.gam3)
-fitted.values(CCC05.gam4)
-fitted.values(CCC05.gam5)
-fitted.values(CCC05.gam6)
+data <- data.frame(spar0 = fitted.values(CCC05.gam),
+                   spar1.0 = fitted.values(CCC05.gam1),
+                   spar0.01 = fitted.values(CCC05.gam2),
+                   spar0.25 = fitted.values(CCC05.gam3),
+                   spar0.75 = fitted.values(CCC05.gam4)
+                   )
+
+boxplot(data)
+
+par(mfrow=c(2,2))
+plot(pred_default, residuals(CCC05.gam),)
+qqnorm(residuals(CCC05.gam))
+plot(pred1, residuals(CCC05.gam1))
+qqnorm(residuals(CCC05.gam1))
+plot(pred2, residuals(CCC05.gam2))
+qqnorm(residuals(CCC05.gam2))
+plot(pred3, residuals(CCC05.gam3))
+qqnorm(residuals(CCC05.gam3))
+plot(pred4, residuals(CCC05.gam4))
+qqnorm(residuals(CCC05.gam4))
 ```
 
 ```{r}
@@ -90,49 +98,48 @@ ECAN93 <- transform(ECAN93, ndate = as.numeric(Date),
 
 
 # Start with the default model and 4 more with different spar parameters
+ECAN93.gam <- gam(Value ~ s(nyear) + s(nmonth) +s(nday), data = ECAN93 )
+pred_default <- predict(ECAN93.gam)
+summary(ECAN93.gam)
 
-CCC05.gam <- gam(Value ~ s(nyear) + s(nmonth) +s(nday), data = CCC05 )
-pred_default <- predict(CCC05.gam)
-
-CCC05.gam1 <- gam(Value ~ s(nyear, sp=0.5) + s(nmonth, sp = 0.5) +
-                    s(nday, sp = 0.5), data = CCC05)
+ECAN93.gam1 <- gam(Value ~ s(nyear, sp=1.0) + s(nmonth, sp = 1.0) +
+                    s(nday, sp = 1.0), data = ECAN93)
 pred1 <- predict(CCC05.gam1)
+summary(ECAN93.gam1)
 
-CCC05.gam2 <- gam(Value ~ s(nyear, sp=1.0) + s(nmonth, sp = 1.0) +
-                    s(nday, sp = 1.0), data = CCC05)
-pred2 <- predict(CCC05.gam2)
+ECAN93.gam2 <- gam(Value ~ s(nyear, sp=0.01) + s(nmonth, sp = 0.01) +
+                    s(nday, sp = 0.01), data = ECAN93)
+pred2 <- predict(ECAN93.gam2)
+summary(ECAN93.gam2)
 
-CCC05.gam3 <- gam(Value ~ s(nyear, sp=0.01) + s(nmonth, sp = 0.01) +
-                    s(nday, sp = 0.01), data = CCC05)
-pred3 <- predict(CCC05.gam3)
+ECAN93.gam3 <- gam(Value ~ s(nyear, sp=0.25) + s(nmonth, sp = 0.25) +
+                    s(nday, sp = 0.25), data = ECAN93)
+pred3 <- predict(ECAN93.gam3)
+summary(ECAN93.gam3)
 
-CCC05.gam4 <- gam(Value ~ s(nyear, sp=0.75) + s(nmonth, sp = 0.75) +
-                    s(nday, sp = 0.75), data = CCC05)
-pred4 <- predict(CCC05.gam4)
+ECAN93.gam4 <- gam(Value ~ s(nyear, sp=0.75) + s(nmonth, sp = 0.75) +
+                    s(nday, sp = 0.75), data = ECAN93)
+pred4 <- predict(ECAN93.gam4)
+summary(ECAN93.gam4)
 
-CCC05.gam5 <- gam(Value ~ s(nyear, sp=0.25) + s(nmonth, sp = 0.25) +
-                    s(nday, sp = 0.25), data = CCC05)
-pred5 <- predict(CCC05.gam5)
-
-CCC05.gam6 <- gam(Value ~ s(nyear, sp=0.4) + s(nmonth, sp = 0.4) +
-                    s(nday, sp = 0.4), data = CCC05)
-pred6 <- predict(CCC05.gam6)
-ggplot(data = CCC05, aes(x = Date, y = Value)) +
+ggplot(data = ECAN93, aes(x = Date, y = Value)) +
   geom_point() +
   geom_line(aes(x=Date, y=pred_default), colour = "red") +
   geom_line(aes(x=Date, y=pred1), colour = "orange") +
   geom_line(aes(x=Date, y=pred2), colour = "yellow") +
   geom_line(aes(x=Date, y=pred3), colour = "green") +
-  geom_line(aes(x=Date, y=pred4), colour = "blue") +
-  geom_line(aes(x=Date, y=pred5), colour = "purple") +
-  geom_line(aes(x=Date, y=pred6), colour = "pink")
-
+  geom_line(aes(x=Date, y=pred4), colour = "blue")
 ```
 
 
-
-
 # QUESTION 2 Multiple Comparisons
+```{r, warning=FALSE, message=FALSE}
+# Read in dataset
+library(xlsx)
+herbicides <- read.xlsx("herbicides.xlsx", sheetIndex = 1)
+```
+
+
 (a) Carry out an analysis of variance on the data with Herbicide as the explanatory variable and Grass_percent" as the response.
 (b) Discuss the residuals
 (c) Carry out an LSD type analysis comparing all possible pairs of treatments. Note which pairs have a significant difference.
