@@ -34,15 +34,18 @@ summary(dataset)
 
 # Data preprocessing
 # Split Blood Pressure column into systolic and diastolic pressure as numeric data
-dataset[c('Systolic.Pressure', 'Diastolic.Pressure')] <- as.numeric(str_split_fixed(dataset$Blood.Pressure, '/', 2))
+dataset[c('Systolic.Pressure', 'Diastolic.Pressure')] <- 
+  as.numeric(str_split_fixed(dataset$Blood.Pressure, '/', 2))
 
 # Combine "Normal" and "Normal Weight" values in BMI.Category
 dataset$BMI.Category[dataset$BMI.Category == "Normal Weight"] <- "Normal"
 # Change "Obese" into "Overweight"
 dataset$BMI.Category[dataset$BMI.Category == "Obese"] <- "Overweight"
 
-# Remove Occupations that has count under 10 (namely, Software Engineer, Scientist, Sales Representative, Manager)
-dataset <- dataset[!(dataset$Occupation =="Software Engineer" | dataset$Occupation =="Scientist" |
+# Remove Occupations that has count under 10 (namely, Software Engineer, 
+# Scientist, Sales Representative, Manager)
+dataset <- dataset[!(dataset$Occupation =="Software Engineer" 
+                     | dataset$Occupation =="Scientist" |
           dataset$Occupation =="Sales Representative" |
           dataset$Occupation =="Manager"),]
 ```
