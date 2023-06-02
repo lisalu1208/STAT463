@@ -85,25 +85,8 @@ grid.arrange(gender,occupation, bmi, sleep_disorder, ncol = 2, nrow = 2)
 
 # Explore the factors affecting quality of sleep
 ```{r}
-# Use linear regression model
-sleep <- dataset[, -c(1, 10)]
-# Get the full multiple linear regression model
-lr_full <- lm(Quality.of.Sleep ~ Age + Gender + Occupation + Sleep.Duration + Physical.Activity.Level + Stress.Level + Heart.Rate + Daily.Steps + Systolic.Pressure + Diastolic.Pressure + BMI.Category, data = dataset)
-
-summary(lr_full)
-
-plot(lr_full)
-lr_backward <- step(lr_full, direction = "backward")
-summary(lr_backward)
-
- # Use PCA analysis
-# Standardise the Quality of sleep and stress level
-Quality.of.Sleep <- data.frame(scale(dataset$Quality.of.Sleep))
-Stress.Level <- data.frame(scale(dataset$Stress.Level))
-Physical.Level <-data.frame(scale(dataset$Physical.Activity.Level))
-
-pca_dataset <- select(dataset, Age, Physical.Activity.Level, Stress.Level, Sleep.Duration, Heart.Rate, Daily.Steps, Systolic.Pressure, Diastolic.Pressure)
-pca <- prcomp(scale(pca_dataset))
+# Use PCA analysis
+pca <- prcomp(scale(numeric.data))
 screeplot(pca)
 summary(pca)
 pca$rotation
@@ -111,28 +94,31 @@ biplot(pca)
 ```
 
 ```{r}
-step.model <- step(lr_full, direction = "backward")
-summary(step.model)
+# Use linear regression model
+sleep <- dataset[, -c(1, 10)]
+# Get the full multiple linear regression model
+lr_full <- lm(Quality.of.Sleep ~ ., data = sleep)
+summary(lr_full)
+par(mfrow = c(2,2))
+plot(lr_full)
+cor(numeric.data, numeric.data$Quality.of.Sleep)
 ```
 
-
-# Explore the causes of sleep disorder
-```{r}
-# Multinomial Logistic Regression: predict the probablities of categorically dependent variable
-library(nnet)
-mlr <- multinom(Sleep.Disorder ~ Gender + Occupation + Stress.Level + Physical.Activity.Level, data = sleep)
-summary(mlr)
-exp(summary(mlr)$coefficients)
-step(mlr, direction = 'backward')
-
-```
-
-# Generalised Linear Mixed Model
 ```{r}
 library(lme4)
 m1 <- lmer(Quality.of.Sleep ~ Sleep.Duration + Stress.Level + (1|Occupation), data = sleep)
 summary(m1)
+plot(m1)
 m2 <- lmer(Quality.of.Sleep ~ Sleep.Duration + (1|Occupation), data=sleep)
 summary(m2)
+
+lr2 <- glm(Quality.of.Sleep ~ Sleep.Duration, data = sleep)
+summary(lr2)
+plot(lr2)
+```
+
+```{r}
+step.model <- step(lr_full, direction = "backward")
+summary(step.model)
 ```
 
