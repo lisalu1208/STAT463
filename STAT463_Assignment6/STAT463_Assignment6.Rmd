@@ -85,7 +85,7 @@ qqnorm(residuals(CCC05.gam3))
 plot(pred4, residuals(CCC05.gam4))
 qqnorm(residuals(CCC05.gam4))
 ```
-From the summaries and the plots above, we can see that 
+From the summaries above, we can see that when spar had the value of 0.01, it provided the highest variance explained value, 54\%. This can also be seen from the plot above, the yellow line has the best fitting. From the residual plots, we can see that all these models had similar residual distributions. The Q-Q plots suggested there is a slight skewness in the residuals. 
 
 ```{r}
 ECAN93 <- read.table("ECAN93.csv", header = TRUE, sep = ',', na.strings = "na")
@@ -101,8 +101,6 @@ ECAN93 <- transform(ECAN93, ndate = as.numeric(Date),
 ECAN93.gam <- gam(Value ~ s(nyear) + s(nmonth) +s(nday), data = ECAN93 )
 pred_default <- predict(ECAN93.gam)
 summary(ECAN93.gam)
-ECAN93.gam$y
-ECAN93.gam$X
 
 ECAN93.gam1 <- gam(Value ~ s(nyear, sp=1.0) + s(nmonth, sp = 1.0) +
                     s(nday, sp = 1.0), data = ECAN93)
@@ -124,8 +122,8 @@ ECAN93.gam4 <- gam(Value ~ s(nyear, sp=0.75) + s(nmonth, sp = 0.75) +
 pred4 <- predict(ECAN93.gam4)
 summary(ECAN93.gam4)
 
-# ggplot(data = ECAN93, aes(x = Date, y = Value)) +
-  # geom_point() +
+# ggplot(data = ECAN93, aes(x = Date, y = Value))
+  # geom_point()
   # geom_line(aes(x=Date, y=pred_default), colour = "pink") +
   # geom_line(aes(x=Date, y=pred1), colour = "lightblue") +
   # geom_line(aes(x=Date, y=pred2), colour = "lightgreen") +
