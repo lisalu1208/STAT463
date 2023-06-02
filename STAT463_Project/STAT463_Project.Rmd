@@ -97,7 +97,7 @@ biplot(pca)
 # Use linear regression model
 sleep <- dataset[, -c(1, 10)]
 # Get the full multiple linear regression model
-lr_full <- lm(Quality.of.Sleep ~ ., data = sleep)
+lr_full <- lm(scale(Quality.of.Sleep) ~ ., data = sleep)
 summary(lr_full)
 par(mfrow = c(2,2))
 plot(lr_full)
@@ -118,7 +118,11 @@ plot(lr2)
 ```
 
 ```{r}
-step.model <- step(lr_full, direction = "backward")
-summary(step.model)
+# Mixed Linear Model
+model <- lmer(Quality.of.Sleep ~   (0 + Stress.Level|Occupation) , data = sleep)
+model1 <- lmer(Quality.of.Sleep ~ Sleep.Duration + Stress.Level + (1|Occupation), data = sleep)
+summary(model)
+summary(model1)
+plot(model1)
 ```
 

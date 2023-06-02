@@ -1,0 +1,24 @@
+---
+title: "STAT463_Assignment6(1)"
+author: "Lisa Lu 31088272"
+date: "2023-06-02"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(gam)
+library(ggplot2)
+```
+
+
+```{r}
+CCC05 <- read.table("CCC05.csv", header = TRUE, sep = ',', na.strings = "na")
+CCC05$Date <- as.Date(CCC05$Date, "%d/%m/%Y")
+
+CCC05.gam <- gam(Value ~ s(Date), data = CCC05)
+```
+
