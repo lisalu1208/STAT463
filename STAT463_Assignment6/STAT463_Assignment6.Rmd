@@ -1,7 +1,6 @@
 ---
 title: "Assignment 6 STAT 315-463: Multivariable Statistical Methods and Applications"
 author: "Lisa Lu 31088272"
-date: "2023-05-27"
 output: pdf_document
 ---
 
@@ -101,6 +100,8 @@ ECAN93 <- transform(ECAN93, ndate = as.numeric(Date),
 ECAN93.gam <- gam(Value ~ s(nyear) + s(nmonth) +s(nday), data = ECAN93 )
 pred_default <- predict(ECAN93.gam)
 summary(ECAN93.gam)
+ECAN93.gam$y
+ECAN93.gam$X
 
 ECAN93.gam1 <- gam(Value ~ s(nyear, sp=1.0) + s(nmonth, sp = 1.0) +
                     s(nday, sp = 1.0), data = ECAN93)
@@ -122,13 +123,13 @@ ECAN93.gam4 <- gam(Value ~ s(nyear, sp=0.75) + s(nmonth, sp = 0.75) +
 pred4 <- predict(ECAN93.gam4)
 summary(ECAN93.gam4)
 
-ggplot(data = ECAN93, aes(x = Date, y = Value)) +
-  geom_point() +
-  geom_line(aes(x=Date, y=pred_default), colour = "red") +
-  geom_line(aes(x=Date, y=pred1), colour = "orange") +
-  geom_line(aes(x=Date, y=pred2), colour = "yellow") +
-  geom_line(aes(x=Date, y=pred3), colour = "green") +
-  geom_line(aes(x=Date, y=pred4), colour = "blue")
+# ggplot(data = ECAN93, aes(x = Date, y = Value)) +
+  # geom_point() +
+  # geom_line(aes(x=Date, y=pred_default), colour = "pink") +
+  # geom_line(aes(x=Date, y=pred1), colour = "lightblue") +
+  # geom_line(aes(x=Date, y=pred2), colour = "lightgreen") +
+  # geom_line(aes(x=Date, y=pred3), colour = "purple") +
+  # geom_line(aes(x=Date, y=pred4), colour = "black")
 ```
 
 
@@ -141,6 +142,13 @@ herbicides <- read.xlsx("herbicides.xlsx", sheetIndex = 1)
 
 
 (a) Carry out an analysis of variance on the data with Herbicide as the explanatory variable and Grass_percent" as the response.
+```{r, warning=False, message=FALSE}
+library(multcomp)
+
+Herbicides.aov <- aov(Grass_percent ~ Herbicide, herbicides)
+summary(Herbicides.aov)
+```
+
 (b) Discuss the residuals
 (c) Carry out an LSD type analysis comparing all possible pairs of treatments. Note which pairs have a significant difference.
 (d) Carry out pairwise comparisons using Bonferroni, Tukey and Dunnett adjustments and in each case show the pairs with significant differences.
