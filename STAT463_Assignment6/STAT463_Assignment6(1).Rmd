@@ -19,6 +19,17 @@ library(ggplot2)
 CCC05 <- read.table("CCC05.csv", header = TRUE, sep = ',', na.strings = "na")
 CCC05$Date <- as.Date(CCC05$Date, "%d/%m/%Y")
 
-CCC05.gam <- gam(Value ~ s(Date), data = CCC05)
+# Kept showing Error in names(dat) <- object$term : 
+# 'names' attribute [1] must be the same length as the vector [0]
+CCC05 <- transform(CCC05, ndate = as.numeric(Date),
+                   nyear  = as.numeric(format(Date, '%Y')),
+                   nmonth = as.numeric(format(Date, '%m')),
+                   nday = as.numeric(format(Date, '%j')))
+
+CCC05.gam <- gam(Value ~ s(nyear, sp = 0.01) + s(nmonth, sp = 0.01) +s(nday, sp = 0.01), data = CCC05)
+pred_default <- predict(CCC05.gam)
+ggplot(data = CCC05, aes(x = Date, y = Value)) +
+  geom_point() +
+  geom_line(aes(x=Date, y=pred_default), colour = "red")
 ```
 
